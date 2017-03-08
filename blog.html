@@ -1,8 +1,11 @@
-﻿---
-layout: master
-title: 博客清单
-full_posts: 2
 ---
+layout: master
+title: Blog
+full_posts: 5
+---
+
+<a href='http://feeds.feedburner.com/JoinTheConversation' class='float-right'><img src='/images/subscribe.png' alt='Subscribe to XML Feed'/></a>
+
 {% for post in site.posts %}
   {% if forloop.index < page.full_posts %}
   <div class='post'>
