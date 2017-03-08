@@ -1,9 +1,9 @@
----
-title: ¹ØÓÚÖìÃ÷Îä
+ï»¿---
+title: å…³äºæœ±æ˜æ­¦
 layout: master
 ---
 
-h2. ¹ØÓÚÖìÃ÷Îä
+h2. å…³äºæœ±æ˜æ­¦
 
 <span style="margin:0 10px; float:right"><a href="http://www.flickr.com/photos/chacon/208076922/" title="IMG_4087.JPG by schacon, on Flickr"><img src="http://farm1.static.flickr.com/69/208076922_ad9da3ea61_m.jpg" width="240" height="160" alt="IMG_4087.JPG" /></a></span>
 
