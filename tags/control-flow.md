@@ -1,4 +1,5 @@
 ---
+layout: layout
 title: Control flow
 description: An overview of control flow and conditional tags in the Liquid template language.
 ---

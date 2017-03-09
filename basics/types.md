@@ -1,4 +1,5 @@
 ---
+layout: layout
 title: Types
 description: An overview of data types in the Liquid template language.
 ---

@@ -1,4 +1,5 @@
 ---
+layout: layout
 title: Operators
 description: Using operators to perform calculations in the Liquid template language.
 ---

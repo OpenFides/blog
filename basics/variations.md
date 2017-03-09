@@ -1,4 +1,5 @@
 ---
+layout: layout
 title: Variations of Liquid
 description: An overview of the different installations of Liquid and how Liquid can change depending on where you're using it.
 ---

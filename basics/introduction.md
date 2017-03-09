@@ -1,4 +1,5 @@
 ---
+layout: layout
 title: Introduction
 description: An overview of objects, tags, and filters in the Liquid template language.
 ---

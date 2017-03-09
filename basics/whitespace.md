@@ -1,4 +1,5 @@
 ---
+layout: layout
 title: Whitespace control
 description: An overview of controlling whitespace between code in the Liquid template language.
 ---

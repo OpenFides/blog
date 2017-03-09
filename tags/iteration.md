@@ -1,4 +1,5 @@
 ---
+layout: layout
 title: Iteration
 description: An overview of iteration or 'loop' tags in the Liquid template language.
 ---

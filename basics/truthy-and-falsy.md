@@ -1,4 +1,5 @@
 ---
+layout: layout
 title: Truthy and falsy
 description: An overview of boolean logic in the Liquid template language.
 ---
