@@ -7,9 +7,6 @@
     <title>{% if page.title %}{{ page.title }} ¨C {% endif %}{{ site.title }}</title>
     <meta name="generator" content="zhumingwu.cn" />
     <link href="/css/bootstrap.min.css" rel="stylesheet">
-    <!--[if lt IE 9]>
-        <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
     <link href="/css/styles.css" rel="stylesheet">
 </head>
 <body>
@@ -40,19 +37,14 @@
             <div class="row">
                 <div class="col-md-7">
                     <h1>
-                        Bootstrap Sidebar
-                        <p class="lead">With Affix and Scrollspy</p>
+                        投资菜地
+                        <p class="lead">屋后的一亩三分绿色菜园地</p>
                     </h1>
                 </div>
                 <div class="col-md-5">
                     <div class="well well-lg">
                         <div class="row">
-                            <div class="col-sm-6">
-                                <img src="//placehold.it/180x100" class="img-responsive">
-                            </div>
-                            <div class="col-sm-6">
-                                Some text here
-                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -63,21 +55,13 @@
     <div class="container">
         <div class="row">
             <!--left-->
-            <div class="col-md-3" id="leftCol">
-                <ul class="nav nav-stacked" id="sidebar">
-                    <li><a href="#sec0">Section 0</a></li>
-                    <li><a href="#sec1">Section 1</a></li>
-                    <li><a href="#sec2">Section 2</a></li>
-                    <li><a href="#sec3">Section 3</a></li>
-                    <li><a href="#sec4">Section 4</a></li>
-                </ul>
-            </div>
             {% include sidebar.html %}
             <!--/left-->
             <!--right-->
             <div class="col-md-9">
                 {{ content }}
-            </div><!--/right-->
+            </div>
+            <!--/right-->
         </div><!--/row-->
     </div><!--/container-->
     <!-- script references -->
