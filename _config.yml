@@ -1,2 +1,17 @@
-﻿theme: jekyll-theme-modernist
-theme: jekyll-theme-architect
+﻿theme: jekyll-theme-architect
+exclude:
+  - README.md
+  - CNAME
+defaults:
+  - scope:
+      path: "basics"
+    values:
+      layout: basics
+  - scope:
+      path: "filters"
+    values:
+      type: filters
+  - scope:
+      path: "tags"
+    values:
+      type: tags

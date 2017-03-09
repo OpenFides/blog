@@ -8,12 +8,9 @@ title: Liquid指南
     <tr><td>基本</td></tr>
     <tr>
         <td>
-            {% for post in site.posts.basics %}
+            {% for post in site.basics %}
             <div class='post'>
-                <span class='date'>{{post.date | date:"%Y-%m-%d"}}</span>
                 <h1><a href='{{post.url}}'>{{post.title}}</a></h1>
-                <div class='body'>{{post.content}}</div>
-                <a href='{{post.url}}#disqus_thread'>查看评论</a>
             </div>
             {% endfor %}
         </td>
@@ -21,12 +18,9 @@ title: Liquid指南
     <tr><td>过滤</td></tr>
     <tr>
         <td>
-            {% for post in site.posts.filters %}
+            {% for post in site.filters %}
             <div class='post'>
-                <span class='date'>{{post.date | date:"%Y-%m-%d"}}</span>
                 <h1><a href='{{post.url}}'>{{post.title}}</a></h1>
-                <div class='body'>{{post.content}}</div>
-                <a href='{{post.url}}#disqus_thread'>查看评论</a>
             </div>
             {% endfor %}
         </td>
@@ -34,15 +28,11 @@ title: Liquid指南
     <tr><td>标签</td></tr>
     <tr>
         <td>
-            {% for post in site.posts.tags %}
+            {% for post in site.tags %}
             <div class='post'>
-                <span class='date'>{{post.date | date:"%Y-%m-%d"}}</span>
                 <h1><a href='{{post.url}}'>{{post.title}}</a></h1>
-                <div class='body'>{{post.content}}</div>
-                <a href='{{post.url}}#disqus_thread'>查看评论</a>
             </div>
             {% endfor %}
         </td>
     </tr>
-
 </table>
