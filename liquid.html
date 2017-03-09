@@ -18,7 +18,6 @@ title: Liquid指南
             {% endfor %}
         </td>
     </tr>
-    {% endfor %}
     <tr><td>过滤</td></tr>
     <tr>
         <td>
@@ -29,9 +28,9 @@ title: Liquid指南
                 <div class='body'>{{post.content}}</div>
                 <a href='{{post.url}}#disqus_thread'>查看评论</a>
             </div>
+            {% endfor %}
         </td>
     </tr>
-    {% endfor %}
     <tr><td>标签</td></tr>
     <tr>
         <td>
