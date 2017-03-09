@@ -10,14 +10,14 @@ gems:
 # Front matter defaults
 defaults:
   - scope:
-      path: "basics"
+      path: ""
     values:
-      layout: basics
+      layout: default
   - scope:
       path: "filters"
     values:
-      type: filters
+      type: filter
   - scope:
       path: "tags"
     values:
-      type: tags
+      type: tag

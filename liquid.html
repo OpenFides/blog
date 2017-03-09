@@ -3,39 +3,6 @@ layout: master
 title: Liquid指南
 ---
 
-<a href='http://feeds.feedburner.com/JoinTheConversation' class='float-right'><img src='/images/subscribe.png' alt='Subscribe to XML Feed' /></a>
-<table>
-    <tr><td>基本</td></tr>
-    <tr>
-        <td>
-            {% for post in site.basics %}
-            <div class='post'>
-                <h1><a href='{{post.url}}'>{{post.title}}</a></h1>
-            </div>
-            {% endfor %}
-        </td>
-    </tr>
-    <tr><td>过滤</td></tr>
-    <tr>
-        <td>
-            {% for post in site.filters %}
-            <div class='post'>
-                <h1><a href='{{post.url}}'>{{post.title}}</a></h1>
-            </div>
-            {% endfor %}
-        </td>
-    </tr>
-    <tr><td>标签</td></tr>
-    <tr>
-        <td>
-            {% for post in site.tags %}
-            <div class='post'>
-                <h1><a href='{{post.url}}'>{{post.title}}</a></h1>
-            </div>
-            {% endfor %}
-        </td>
-    </tr>
-</table>
 <div class="sidebar">
     <header class="sidebar__logo" role="banner">
         <a href="{{ "/" | prepend: site.baseurl }}">Liquid</a>
