@@ -1,11 +1,11 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
-  <head>
+<head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>{% if page.title %}{{ page.title }} – {% endif %}{{ site.title }}</title>
+    <title>{% if page.title %} 朱明武-{{ page.title }} {% endif %}{{ site.title }}</title>
 
     <meta name="description" content="{{ page.description | default: site.description }}">
     <meta name="author" content="Shopify">
@@ -32,23 +32,23 @@
     <meta name="twitter:url" content="{{ site.url | append: site.baseurl }}">
     <meta name="twitter:title" content="{{ page.title | default: site.title }}">
     <meta name="twitter:description" content="{{ page.description | default: site.description }}">
-  </head>
+</head>
 
-  <body>
+<body>
 
     {% include sidebar.html %}
 
     <div class="content__overlay"></div>
     <main class="content__area" role="main">
-      <div class="content">
-        <button class="menu-button">
-          <span aria-hidden="true">{% include icons/three-bars.svg %}</span>
-          <span>Menu</span>
-        </button>
-        {% if page.title %}<h1>{{ page.title }}</h1>{% endif %}
-        {{ content }}
-      </div>
+        <div class="content">
+            <button class="menu-button">
+                <span aria-hidden="true">{% include icons/three-bars.svg %}</span>
+                <span>Menu</span>
+            </button>
+            {% if page.title %}<h1>{{ page.title }}</h1>{% endif %}
+            {{ content }}
+        </div>
     </main>
     <script src="{{ '/js/script.js' | prepend: site.baseurl }}"></script>
-  </body>
+</body>
 </html>
