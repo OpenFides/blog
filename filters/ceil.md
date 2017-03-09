@@ -1,4 +1,5 @@
 ---
+layout: layout
 title: ceil
 description: Liquid filter that gets the ceiling of a number by rounding up to the nearest integer.
 ---

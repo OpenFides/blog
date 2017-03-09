@@ -1,4 +1,5 @@
 ---
+layout: layout
 title: capitalize
 description: Liquid filter that capitalizes the first character in a string.
 ---

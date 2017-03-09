@@ -1,4 +1,5 @@
 ---
+layout: layout
 title: modulo
 description: Liquid filter that returns the remainder from a division operation.
 ---

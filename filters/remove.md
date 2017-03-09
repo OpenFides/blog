@@ -1,4 +1,5 @@
 ---
+layout: layout
 title: remove
 description: Liquid filter that removes all occurences of a given substring from a string.
 ---

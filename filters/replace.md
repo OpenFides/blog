@@ -1,4 +1,5 @@
 ---
+layout: layout
 title: replace
 description: Liquid filter that replaces all occurences of a given substring in a string.
 ---

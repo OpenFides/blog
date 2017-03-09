@@ -1,4 +1,5 @@
 ---
+layout: layout
 title: replace_first
 description: Liquid filter that replaces the first occurrence of a given substring in a string.
 ---

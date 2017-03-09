@@ -1,4 +1,5 @@
 ---
+layout: layout
 title: slice
 description: Liquid filter that returns a substring from a given position in a string.
 ---

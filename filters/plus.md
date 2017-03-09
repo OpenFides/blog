@@ -1,4 +1,5 @@
 ---
+layout: layout
 title: plus
 description: Liquid filter that adds a number to another number.
 ---

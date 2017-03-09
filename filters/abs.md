@@ -1,4 +1,5 @@
 ---
+layout: layout
 title: abs
 description: Liquid filter that gets the absolute value of a number.
 ---

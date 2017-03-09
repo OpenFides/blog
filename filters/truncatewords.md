@@ -1,4 +1,5 @@
 ---
+layout: layout
 title: truncatewords
 description: Liquid filter that truncates a string to the given number of words.
 ---

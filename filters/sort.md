@@ -1,4 +1,5 @@
 ---
+layout: layout
 title: sort
 description: Liquid filter that sorts an array in case-sensitive order.
 ---

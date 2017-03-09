@@ -1,4 +1,5 @@
 ---
+layout: layout
 title: compact
 description: Liquid filter that removes nil values from an array.
 ---

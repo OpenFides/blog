@@ -1,4 +1,5 @@
 ---
+layout: layout
 title: reverse
 description: Liquid filter that reverses an array, or a string converted to an array.
 ---

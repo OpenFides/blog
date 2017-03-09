@@ -1,4 +1,5 @@
 ---
+layout: layout
 title: rstrip
 description: Liquid filter that removes all whitespace from the right side of a string.
 ---

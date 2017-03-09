@@ -1,4 +1,5 @@
 ---
+layout: layout
 title: uniq
 description: Liquid filter that removes duplicate items from an array.
 ---

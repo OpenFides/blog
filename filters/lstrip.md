@@ -1,4 +1,5 @@
 ---
+layout: layout
 title: lstrip
 description: Liquid filter that removes whitespace from the left side of a string.
 ---

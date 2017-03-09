@@ -1,4 +1,5 @@
 ---
+layout: layout
 title: url_encode
 description: Liquid filter that encodes URL-unsafe characters in a string.
 ---

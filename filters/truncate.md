@@ -1,4 +1,5 @@
 ---
+layout: layout
 title: truncate
 description: Liquid filter that truncates a string to a given number of characters.
 ---

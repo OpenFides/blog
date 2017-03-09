@@ -1,4 +1,5 @@
 ---
+layout: layout
 title: first
 description: Liquid filter that returns the first item of an array.
 ---

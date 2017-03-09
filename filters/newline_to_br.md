@@ -1,4 +1,5 @@
 ---
+layout: layout
 title: newline_to_br
 description: Liquid filter that converts newlines in an input string to HTML <br> tags.
 ---

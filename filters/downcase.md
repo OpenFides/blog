@@ -1,4 +1,5 @@
 ---
+layout: layout
 title: downcase
 description: Liquid filter that coverts a string to lowercase.
 ---

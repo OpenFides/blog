@@ -1,4 +1,5 @@
 ---
+layout: layout
 title: default
 description: Liquid filter that specifies a fallback in case a value doesn't exist.
 ---

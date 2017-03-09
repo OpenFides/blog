@@ -1,4 +1,5 @@
 ---
+layout: layout
 title: strip_newlines
 description: Liquid filter that removes newline characters from a string.
 ---

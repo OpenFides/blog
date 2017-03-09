@@ -1,4 +1,5 @@
 ---
+layout: layout
 title: url_decode
 description: Liquid filter that decodes percent-encoded characters in a string.
 ---

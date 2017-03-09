@@ -1,4 +1,5 @@
 ---
+layout: layout
 title: upcase
 description: Liquid filter that capitalizes every character in a string.
 ---

@@ -1,4 +1,5 @@
 ---
+layout: layout
 title: last
 description: Liquid filter that gets the last value in an array.
 ---

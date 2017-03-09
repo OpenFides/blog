@@ -1,4 +1,5 @@
 ---
+layout: layout
 title: divided_by
 description: Liquid filter that divides a number by another number.
 ---

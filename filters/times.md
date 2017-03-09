@@ -1,4 +1,5 @@
 ---
+layout: layout
 title: times
 description: Liquid filter that multiplies a number by another number.
 ---

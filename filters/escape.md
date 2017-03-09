@@ -1,4 +1,5 @@
 ---
+layout: layout
 title: escape
 description: Liquid filter that escapes URL-unsafe characters in a string.
 ---

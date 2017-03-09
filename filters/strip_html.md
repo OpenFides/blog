@@ -1,4 +1,5 @@
 ---
+layout: layout
 title: strip_html
 description: Liquid filter that removes HTML tags from a string.
 ---

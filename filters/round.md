@@ -1,4 +1,5 @@
 ---
+layout: layout
 title: round
 description: Liquid filter that rounds a number to the nearest integer.
 ---

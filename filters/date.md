@@ -1,4 +1,5 @@
 ---
+layout: layout
 title: date
 description: Liquid filter that prints and formats dates.
 ---

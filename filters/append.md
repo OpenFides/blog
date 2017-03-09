@@ -1,4 +1,5 @@
 ---
+layout: layout
 title: append
 description: Liquid filter that appends a string to another string.
 ---
