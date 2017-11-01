@@ -6,3 +6,4 @@ keep_files: ["css"]
 # Plugins
 gems:
   - jekyll-redirect-from
+theme: jekyll-theme-slate
