@@ -1,0 +1,76 @@
+﻿using Microsoft.Win32;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.IO;
+using System.Linq;
+using System.Runtime.InteropServices;
+using System.Security.Permissions;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace Bzway
+{
+    public partial class MainForm : Form
+    {
+        public MainForm()
+        {
+            InitializeComponent();
+        }
+        bool block = false;
+        int count = 0;
+        public double minutes;
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            string path = Application.ExecutablePath + " 45";
+            RegistryKey registryKey = Registry.LocalMachine.CreateSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run");
+            registryKey.SetValue("ScreenLocker", path);
+            registryKey.Close();
+            while (minutes <= 0 || minutes > 120)
+            {
+                var input = Microsoft.VisualBasic.Interaction.InputBox("请输入您的工作时间（分钟）：", "请输入时间", "45", 0, 0);
+                double.TryParse(input, out minutes);
+            }
+
+
+            Timer timerLock = new Timer();
+            timerLock.Interval = 100;
+            timerLock.Tick += Lock_Tick;
+            timerLock.Enabled = true;
+        }
+        private void Lock_Tick(object sender, EventArgs e)
+        {
+            //锁定状态
+            if (this.block)
+            {
+                count++;
+                if (count >= 600 * 1)
+                {
+                    //unlock
+                    block = false;
+                    count = 0;
+                    this.WindowState = FormWindowState.Minimized;
+                    this.TopMost = block;
+                    WorkStation.Instance.LockWorkStation(block);
+                    return;
+                }
+                this.WindowState = FormWindowState.Maximized;
+                this.TopMost = true;
+                WorkStation.Instance.LockWorkStation(block);
+                return;
+            }
+            //工作状态
+            count++;
+            if (count >= 600 * minutes)
+            {
+                //lock
+                block = true;
+                count = 0;
+                return;
+            }
+        }
+    }
+}
