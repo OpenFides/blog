@@ -21,7 +21,7 @@ namespace Bzway
                 double minutes;
                 if (double.TryParse(arg[0], out minutes))
                 {
-                    form.minutes = minutes;
+                    form.workMinutes = minutes;
                 }
             }
             Application.Run(form);

@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("WindowsFormsApplication1")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("ScreenLocker")]
+[assembly: AssemblyDescription("ScreenLocker")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Microsoft")]
-[assembly: AssemblyProduct("WindowsFormsApplication1")]
-[assembly: AssemblyCopyright("Copyright © Microsoft 2017")]
+[assembly: AssemblyCompany("Bzway")]
+[assembly: AssemblyProduct("ScreenLocker")]
+[assembly: AssemblyCopyright("Copyright © Bzway 2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
