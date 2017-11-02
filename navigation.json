@@ -1,0 +1,12 @@
+{
+  "navigation": [
+    {
+      "path": "/",
+      "name": "我的文档"
+    },
+    {
+      "path": "/Folder1",
+      "name": "第一章"
+    }
+  ]
+}
