@@ -6,3 +6,23 @@ keep_files: ["css"]
 # Plugins
 gems:
   - jekyll-redirect-from
+theme: jekyll-theme-slate
+
+navigation:
+ -
+  path: '/'
+  name: "我的文档"
+ -
+  path: '/Folder1'
+  name: "第一章"
+
+menu:
+ -
+  name: "主页"
+  path: "/"
+ -
+  name: "博客"
+  path: "/blog.html"
+ -
+  name: "关于我们"
+  path: "/aboutus.html"
