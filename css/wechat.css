@@ -34,6 +34,10 @@ a {
     text-decoration: none
 }
 
+image {
+    width: 100%;
+}
+
 .rich_media_inner {
     font-size: 16px;
     word-wrap: break-word;
