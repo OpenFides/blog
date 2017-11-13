@@ -12,6 +12,8 @@ namespace Bzway
         [STAThread]
         static void Main(string[] arg)
         {
+
+            var git = new Git(System.IO.Directory.GetCurrentDirectory(), "", "");
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             var form = new MainForm();
