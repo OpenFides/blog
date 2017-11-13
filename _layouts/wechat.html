@@ -5,10 +5,9 @@
     <meta name="description" content="百易会员俱乐部,我们想创建一个用比较有意义的方式来改变整个互联网的营销平台">
     <link href="/css/wechat.css" rel="stylesheet" />
 </head>
-<body id="activity-detail" class="en_US mm_appmsg rich_media_empty_extra not_in_mm">
+<body>
     <img src="/images/logo.png" width="0" height="0" />
-    <div id="js_article" class="rich_media">
-        <div id="js_top_ad_area" class="top_banner" style="display: none;"></div>
+    <div class="rich_media">
         <div class="rich_media_inner">
             <div id="page-content" class="rich_media_area_primary">
                 <div id="img-content">
@@ -41,17 +40,44 @@
                     <a id="js_report_article3" style="display:none;" class="media_tool_meta tips_global meta_extra" href="https://mp.weixin.qq.com/s/yaBIkuFs9t_M9O7tASRinw##">投诉</a>
                 </div>
             </div>
-
-            <div id="js_pc_qr_code" class="qr_code_pc_outer" style="display: block;">
-                <div class="qr_code_pc_inner">
-                    <div class="qr_code_pc">
-                        <img id="js_pc_qr_code_img" class="qr_code_pc_img" src="/images/qrcode.png">
-                        <p>微信扫一扫<br>关注该公众号</p>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
+    <script type="text/javascript">
 
+        var tit = "我的标题"; //标题
+        var img = "http://blog.zhumingwu.cn/images/logo.png"; //图片
+        var con = "文章的简介"; //简介
+        var link = document.location; //链接
+        document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
+            // 发送给好友
+            WeixinJSBridge.on('menu:share:appmessage', function (argv) {
+                WeixinJSBridge.invoke('sendAppMessage', {
+                    "appid": "wx35d8f9a93970e96e",
+                    "img_url": img,
+                    "img_width": "160",
+                    "img_height": "160",
+                    "link": link,
+                    "desc": con,
+                    "title": tit
+                }, function (res) {
+                    _report('send_msg', res.err_msg);
+                })
+            });
+
+            // 分享到朋友圈
+            WeixinJSBridge.on('menu:share:timeline', function (argv) {
+                WeixinJSBridge.invoke('shareTimeline', {
+                    "img_url": img,
+                    "img_width": "160",
+                    "img_height": "160",
+                    "link": link,
+                    "desc": con,
+                    "title": tit
+                }, function (res) {
+                    _report('timeline', res.err_msg);
+                });
+            });
+        }, false)
+    </script>
 </body>
 </html>
