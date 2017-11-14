@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
@@ -12,8 +13,17 @@ namespace Bzway
         [STAThread]
         static void Main(string[] arg)
         {
+            var root = Directory.GetCurrentDirectory();
+            var git = new Git();
+            git.Set(root, "", "");
+            var version = Console.ReadLine();
+            while (!string.IsNullOrEmpty(version))
+            {
+                git.Get(root, version);
+                version = Console.ReadLine();
+            }
 
-            var git = new Git(System.IO.Directory.GetCurrentDirectory(), "", "");
+            return;
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             var form = new MainForm();

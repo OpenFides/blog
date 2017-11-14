@@ -8,9 +8,19 @@ using System.IO.Compression;
 using System.Linq;
 namespace Bzway
 {
+
+    [Serializable]
+    public class Version
+    {
+        public string Id { get; set; }
+        public string PId { get; set; }
+        public string Auth { get; set; }
+        public DateTime Time { get; set; }
+        public string Comments { get; set; }
+    }
     public class Git
     {
-        public Git(string root, string auth, string comments)
+        public void Set(string root, string auth, string comments)
         {
             #region 1. 遍历工作目录中所有文件
             var files = this.GetFiles(root);
@@ -40,7 +50,63 @@ namespace Bzway
             #endregion
 
         }
-        public List<FileInfo> GetFiles(string root)
+        public void Get(string root, string version)
+        {
+            var listOfVersion = GetVersions(root).Where(m => m.Id.Contains(version)).ToArray();
+            if (listOfVersion.Length != 1)
+            {
+                foreach (var item in GetVersions(root))
+                {
+                    Console.WriteLine(item.Id);
+                }
+                return;
+            }
+            Dictionary<string, string> dictionary;
+            var dataFilePath = Path.Combine(root, ".git", "data", listOfVersion[0].Id);
+
+            using (Stream stream = new FileStream(dataFilePath, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None))
+            {
+                BinaryFormatter formatter = new BinaryFormatter();
+                dictionary = (Dictionary<string, string>)formatter.Deserialize(stream);
+            }
+            if (dictionary == null)
+            {
+                return;
+            }
+            foreach (var item in dictionary.Keys)
+            {
+                FileInfo fileInfo = new FileInfo(Path.Combine(root, item));
+                if (!fileInfo.Directory.Exists)
+                {
+                    fileInfo.Directory.Create();
+                }
+
+                if (!fileInfo.Exists)
+                {
+                    using (var inputStream = fileInfo.OpenWrite())
+                    {
+                        using (var outStream = File.OpenRead(Path.Combine(root, ".git", "data", dictionary[item])))
+                        {
+                            outStream.CopyTo(inputStream);
+                        }
+                    }
+                }
+            }
+        }
+        public void Push(string root, string url)
+        {
+
+        }
+        public void Pull(string root, string url)
+        {
+
+        }
+
+        public void Diff(string version1, string version2)
+        {
+
+        }
+        private List<FileInfo> GetFiles(string root)
         {
             List<FileInfo> list = new List<FileInfo>();
             foreach (var item in Directory.GetFiles(root, "*.*", SearchOption.TopDirectoryOnly))
@@ -61,7 +127,7 @@ namespace Bzway
             }
             return list;
         }
-        public string GetStageVersionId(List<FileInfo> files, string root)
+        private string GetStageVersionId(List<FileInfo> files, string root)
         {
             var dictionary = new Dictionary<string, string>();
             foreach (var file in files)
@@ -76,12 +142,13 @@ namespace Bzway
                 BinaryFormatter formatter = new BinaryFormatter();
                 formatter.Serialize(tempStream, dictionary);
                 tempStream.Flush();
+                tempStream.Close();
             }
 
             var id = GetFileData(root, new FileInfo(tempPath));
             return id;
         }
-        public void SaveVersion(string root, List<Version> list)
+        private void SaveVersion(string root, List<Version> list)
         {
             var versionFilePath = Path.Combine(root, ".git", "version");
             try
@@ -94,7 +161,7 @@ namespace Bzway
             }
             catch { }
         }
-        public List<Version> GetVersions(string root)
+        private List<Version> GetVersions(string root)
         {
             var versionFilePath = Path.Combine(root, ".git", "version");
             var o = new List<Version>();
@@ -109,30 +176,29 @@ namespace Bzway
             catch { }
             return o;
         }
-        public string GetFileData(string root, FileInfo file, bool zip = true)
+        private string GetFileData(string root, FileInfo file, bool zip = false)
         {
             byte[] buffer;
             using (var stream = file.OpenRead())
             {
-                if (zip)
-                {
-                    using (MemoryStream memoryStream = new MemoryStream())
-                    {
-                        using (GZipStream gZipStream = new GZipStream(memoryStream, CompressionMode.Compress))
-                        {
-                            stream.CopyTo(gZipStream);
-                            buffer = new byte[memoryStream.Length];
-                            memoryStream.Read(buffer, 0, buffer.Length);
-                        }
-                    }
-                }
-                else
-                {
-                    buffer = new byte[stream.Length];
-                    stream.Read(buffer, 0, buffer.Length);
-                }
-
+                buffer = new byte[stream.Length];
+                stream.Read(buffer, 0, buffer.Length);
             }
+            if (zip)
+            {
+                using (MemoryStream memoryStream = new MemoryStream())
+                {
+                    using (GZipStream gZipStream = new GZipStream(memoryStream, CompressionMode.Compress, true))
+                    {
+                        gZipStream.Write(buffer, 0, buffer.Length);
+                        gZipStream.Flush();
+                    }
+                    memoryStream.Position = 0;
+                    buffer = new byte[memoryStream.Length];
+                    memoryStream.Read(buffer, 0, buffer.Length);
+                }
+            }
+
             var hashData = sha1(buffer);
             var dataFilePath = Path.Combine(root, ".git", "data", hashData);
             FileInfo dataFileInfo = new FileInfo(dataFilePath);
@@ -149,7 +215,7 @@ namespace Bzway
             }
             return hashData;
         }
-        public string sha1(byte[] data)
+        private string sha1(byte[] data)
         {
             using (var sha1 = new SHA1CryptoServiceProvider())
             {
@@ -158,15 +224,6 @@ namespace Bzway
             }
         }
 
-        [Serializable]
-        public class Version
-        {
-            public string Id { get; set; }
-            public string PId { get; set; }
-            public string Auth { get; set; }
-            public DateTime Time { get; set; }
-            public string Comments { get; set; }
-        }
     }
     public class WorkStation
     {
