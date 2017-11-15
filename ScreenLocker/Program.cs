@@ -13,17 +13,6 @@ namespace Bzway
         [STAThread]
         static void Main(string[] arg)
         {
-            var root = Directory.GetCurrentDirectory();
-            var git = new Git();
-            git.Set(root, "", "");
-            var version = Console.ReadLine();
-            while (!string.IsNullOrEmpty(version))
-            {
-                git.Get(root, version);
-                version = Console.ReadLine();
-            }
-
-            return;
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             var form = new MainForm();
