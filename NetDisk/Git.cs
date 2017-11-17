@@ -6,6 +6,8 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Security.Cryptography;
 using System.IO.Compression;
 using System.Linq;
+using System.Text;
+
 namespace Bzway
 {
 
@@ -215,7 +217,7 @@ namespace Bzway
             }
             return hashData;
         }
-        private string sha1(byte[] data)
+        public string sha1(byte[] data)
         {
             using (var sha1 = new SHA1CryptoServiceProvider())
             {
@@ -223,7 +225,13 @@ namespace Bzway
                 return BitConverter.ToString(hash).Replace("-", "").ToLower();
             }
         }
-
+        public string sha1(string input)
+        {
+            input = input.Replace("\r\n", "\n");
+            input = string.Format("blob {0}{1}{2}", input.Length, Convert.ToChar(0x0), input);
+            var data = Encoding.UTF8.GetBytes(input);
+            return this.sha1(data);
+        }
         public void Diff(string version1, string version2)
         {
             throw new NotImplementedException();

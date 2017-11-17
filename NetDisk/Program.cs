@@ -2,6 +2,7 @@
 using System;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Text;
 using System.Windows.Forms;
 
 namespace Bzway
@@ -14,26 +15,47 @@ namespace Bzway
         [STAThread]
         static void Main(string[] arg)
         {
+            Git aaa = new Git();
+            while (true)
+            {
+                var input = File.ReadAllText(@"D:\lua\foo3.txt", Encoding.UTF8);
+
+                var aaaaaa = aaa.sha1(input);
+
+            }
+
             if (arg.Length == 0)
             {
                 try
                 {
                     Register();
                 }
-                catch { }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+
             }
 
-            var root = Directory.GetCurrentDirectory();
-            VirtualDrive.Create('N', root);
-            var git = new Git();
-            git.Set(root, "", "");
-            var version = Console.ReadLine();
-            while (!string.IsNullOrEmpty(version))
+            try
             {
-                git.Get(root, version);
-                version = Console.ReadLine();
+                var root = Directory.GetCurrentDirectory();
+                VirtualDrive.Create('N', root);
+                var git = new Git();
+                git.Set(root, "", "");
+                var version = Console.ReadLine();
+                while (!string.IsNullOrEmpty(version))
+                {
+                    git.Get(root, version);
+                    version = Console.ReadLine();
+                }
             }
+            catch (Exception ex)
+            {
 
+                Console.WriteLine(ex.Message);
+            }
+            Console.ReadLine();
             return;
             //Application.EnableVisualStyles();
             //Application.SetCompatibleTextRenderingDefault(false);
