@@ -1,0 +1,65 @@
+``` c#
+cd
+//if cc: command not found
+yum install gcc make
+
+
+curl http://download.redis.io/releases/redis-stable.tar.gz -o redis-stable.tar.gz
+tar zxvf redis-stable.tar.gz
+cd redis-stable
+make MALLOC=libc
+//
+/*
+make install会将make编译生成的可执行文件拷贝到/usr/local/bin目录下
+sudo cp redis-server redis-cli /usr/local/bin
+sudo cp redis-sentinel redis-benchmark redis-check-aof redis-check-dump /usr/local/bin
+*/
+make install
+./utils/install_server.sh
+//查看Redis进程
+ps -ef|grep redis
+
+```
+Port           : 6379
+Config file    : /etc/redis/6379.conf
+Log file       : /var/log/redis_6379.log
+Data dir       : /var/lib/redis/6379
+Executable     : /usr/local/bin/redis-server
+Cli Executable : /usr/local/bin/redis-cli
+
+
+```html
+<!--UAT-->
+    <add key="RedisConfiguration" value="10.151.203.39:6379"/>
+<!--production-->
+    <add key="RedisConfiguration" value="10.151.203.48:6379"/>
+
+
+    <staticContent>
+      <remove fileExtension=".woff" />
+      <mimeMap fileExtension=".woff" mimeType="application/x-font-woff" />
+      <remove fileExtension=".woff2" />
+      <mimeMap fileExtension=".woff2" mimeType="application/font-woff2" />
+    </staticContent>
+
+```
+
+//开启Redis服务
+/etc/init.d/redis_6379 start
+//or 
+service redis_6379 start
+//关闭Redis服务
+/etc/init.d/redis_6379 stop
+//or
+service redis_6379 stop
+service redis_6379 status
+
+redis-cli -h 42.159.200.245
+redis-cli -h 10.151.203.39
+
+redis-cli -h 42.159.204.170
+redis-cli -h 10.151.203.48
+
+
+
+
