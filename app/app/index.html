@@ -8,7 +8,9 @@
     <script type="text/javascript" src="bootstrap.min.js"></script>
     <link rel="stylesheet" href="bootstrap.min.css" />
     <style>
-        msgHelp span {
+        #msgHelp span {
+            line-height: 32px;
+            height: 32px;
         }
     </style>
 </head>
@@ -37,7 +39,6 @@
                         <input type="button" value="登录" onclick="pyjs.Wechat('login');" class="form-control" />
                     </div>
                     <div class="btn-group" role="group" aria-label="...">
-
                         <input type="button" value="好友" onclick="pyjs.Wechat('friend');" class="btn btn-default" />
                         <input type="button" value="群聊" onclick="pyjs.Wechat('chatRoom');" class="btn btn-default" />
                         <input type="button" value="公众号" onclick="pyjs.Wechat('mp');" class="btn btn-default" />
@@ -92,7 +93,7 @@
         function LoadFriends(datas) {
             $("#loadPanel").html("");
             for (var i = 0; i < datas.length; i++) {
-                $("#loadPanel").append("<div onclick='SelectUser(this);' data-toggle='tooltip' title='" + loadData(datas[i]) + "' data-id='" + datas[i].UserName + "'>" + datas[i].RemarkName + "</div>");
+                $("#loadPanel").append("<div onclick='SelectUser(this);' data-toggle='tooltip' title='" + loadData(datas[i]) + "' data-id='" + datas[i].UserName + "'>" + (datas[i].RemarkName == "" ? datas[i].NickName : datas[i].RemarkName) + "</div>");
             }
         }
         function LoadRooms(datas) {
@@ -109,11 +110,13 @@
             }
         }
         function loadData(data) {
+
+            var reg = new RegExp("'|\"", "g")
             var temp = {
-                "NickName": data.NickName,
+                "NickName": data.NickName.replace(reg, "’"),
                 "RemarkName": data.RemarkName,
                 "Sex": data.Sex == 0 ? "未知" : data.Sex == 1 ? "男" : "女",
-                "Signature": data.Signature,
+                "Signature": data.Signature.replace(reg, "’"),
                 "PYInitial": data.PYInitial + "|" + data.PYQuanPin + "|" + data.RemarkPYInitial + "|" + data.RemarkPYQuanPin,
                 "Province": data.Province,
                 "City": data.City,
@@ -138,12 +141,22 @@
         }
         function SendMsg() {
             var msg = $("#txtMsg").val();
-            $('#sendPanel').children().each(function () {
-                var item = $(this);
-                var data = JSON.parse(item.attr("title"));
-                pyjs.sendMsg(msg.temp(data), $(this).data("id"));
-            });
-            pyjs.sendMsg(msg, "");
+            var to = $('#sendPanel').children();
+            var len = to.length;
+            var sleeptime = Math.random() * (len > 40 ? 5 : 0);
+
+            for (var i = 0; i < len; i++) {
+                var item = $(to[i]);
+                pyjs.sleep(sleeptime);
+                try {
+                    var data = JSON.parse(item.attr("title"));
+                    pyjs.sendMsg(msg.temp(data), item.data("id"));
+                    item.click();
+                } catch (e) {
+                    alert(item.attr("title"));
+                    alert(e);
+                }
+            }
         }
         var isSearch = false;
         function search() {

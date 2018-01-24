@@ -6,15 +6,16 @@ import sys
 import itchat
 import os
 import json
+import time
 from PyQt5.QtWidgets import QApplication
 from PyQt5.QtWidgets import QWidget
 from PyQt5.QtCore import QObject, pyqtSlot, QUrl
 from PyQt5.QtWebChannel import QWebChannel
 from PyQt5.QtWebEngineWidgets import QWebEngineView
-from  PyQt5.QtGui import QIcon
+from PyQt5.QtGui import QIcon
 @itchat.msg_register(itchat.content.TEXT, isFriendChat=True, isGroupChat=True,isMpChat=True)
 def text_reply(msg):
-    itchat.send(msg=msg)
+    itchat.send(msg=msg.text)
     #msg.user.send("%s : %s" % (msg.user.NickName, msg.text))
 def login():
     itchat.auto_login()
@@ -54,6 +55,9 @@ class CallHandler(QObject):
             getMPs()
         elif(arg=="send"):
             send()
+    @pyqtSlot(int, result=str)
+    def sleep(self, seconds):
+        time.sleep(seconds)
     @pyqtSlot(str, str, result=str)
     def sendMsg(self, msg, toUser):
         print("send " + msg +" to " + toUser);
@@ -70,7 +74,7 @@ if __name__ == '__main__':
     channel.registerObject('pyjs', handler)
     page = view.page()
     page.setWebChannel(channel)
-    path = "file:///"+os.getcwd().replace("\\","/")+ "/app/index.html"
+    path = "file:///"+os.getcwd().replace("\\","/")+ "/index.html"
     view.load(QUrl(path))
     view.setWindowIcon(QIcon('app.png'))
     view.show()
