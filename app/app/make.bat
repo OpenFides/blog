@@ -1,3 +1,3 @@
 set path=C:\MinGW\bin;%path%
 
-gcc scripts\autochat.c -o AutoChat
+gcc autochat.cpp -o AutoChat

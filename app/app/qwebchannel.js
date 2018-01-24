@@ -1,56 +1,4 @@
-/****************************************************************************
-**
-** Copyright (C) 2016 The Qt Company Ltd.
-** Copyright (C) 2014 Klar?lvdalens Datakonsult AB, a KDAB Group company, info@kdab.com, author Milian Wolff <milian.wolff@kdab.com>
-** Contact: https://www.qt.io/licensing/
-**
-** This file is part of the QtWebChannel module of the Qt Toolkit.
-**
-** $QT_BEGIN_LICENSE:BSD$
-** Commercial License Usage
-** Licensees holding valid commercial Qt licenses may use this file in
-** accordance with the commercial license agreement provided with the
-** Software or, alternatively, in accordance with the terms contained in
-** a written agreement between you and The Qt Company. For licensing terms
-** and conditions see https://www.qt.io/terms-conditions. For further
-** information use the contact form at https://www.qt.io/contact-us.
-**
-** BSD License Usage
-** Alternatively, you may use this file under the terms of the BSD license
-** as follows:
-**
-** "Redistribution and use in source and binary forms, with or without
-** modification, are permitted provided that the following conditions are
-** met:
-**   * Redistributions of source code must retain the above copyright
-**     notice, this list of conditions and the following disclaimer.
-**   * Redistributions in binary form must reproduce the above copyright
-**     notice, this list of conditions and the following disclaimer in
-**     the documentation and/or other materials provided with the
-**     distribution.
-**   * Neither the name of The Qt Company Ltd nor the names of its
-**     contributors may be used to endorse or promote products derived
-**     from this software without specific prior written permission.
-**
-**
-** THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-** "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-** LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-** A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-** OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-** SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-** LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-** DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-** THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-** (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."
-**
-** $QT_END_LICENSE$
-**
-****************************************************************************/
-
-"use strict";
-
+﻿"use strict";
 var QWebChannelMessageTypes = {
     signal: 1,
     propertyUpdate: 2,
@@ -64,27 +12,24 @@ var QWebChannelMessageTypes = {
     response: 10,
 };
 
-var QWebChannel = function(transport, initCallback)
-{
+var QWebChannel = function (transport, initCallback) {
     if (typeof transport !== "object" || typeof transport.send !== "function") {
         console.error("The QWebChannel expects a transport object with a send function and onmessage callback property." +
-                      " Given is: transport: " + typeof(transport) + ", transport.send: " + typeof(transport.send));
+            " Given is: transport: " + typeof (transport) + ", transport.send: " + typeof (transport.send));
         return;
     }
 
     var channel = this;
     this.transport = transport;
 
-    this.send = function(data)
-    {
-        if (typeof(data) !== "string") {
+    this.send = function (data) {
+        if (typeof (data) !== "string") {
             data = JSON.stringify(data);
         }
         channel.transport.send(data);
     }
 
-    this.transport.onmessage = function(message)
-    {
+    this.transport.onmessage = function (message) {
         var data = message.data;
         if (typeof data === "string") {
             data = JSON.parse(data);
@@ -107,8 +52,7 @@ var QWebChannel = function(transport, initCallback)
 
     this.execCallbacks = {};
     this.execId = 0;
-    this.exec = function(data, callback)
-    {
+    this.exec = function (data, callback) {
         if (!callback) {
             // if no callback is given, send directly
             channel.send(data);
@@ -129,8 +73,7 @@ var QWebChannel = function(transport, initCallback)
 
     this.objects = {};
 
-    this.handleSignal = function(message)
-    {
+    this.handleSignal = function (message) {
         var object = channel.objects[message.object];
         if (object) {
             object.signalEmitted(message.signal, message.args);
@@ -139,8 +82,7 @@ var QWebChannel = function(transport, initCallback)
         }
     }
 
-    this.handleResponse = function(message)
-    {
+    this.handleResponse = function (message) {
         if (!message.hasOwnProperty("id")) {
             console.error("Invalid response message received: ", JSON.stringify(message));
             return;
@@ -149,8 +91,7 @@ var QWebChannel = function(transport, initCallback)
         delete channel.execCallbacks[message.id];
     }
 
-    this.handlePropertyUpdate = function(message)
-    {
+    this.handlePropertyUpdate = function (message) {
         for (var i in message.data) {
             var data = message.data[i];
             var object = channel.objects[data.object];
@@ -160,15 +101,14 @@ var QWebChannel = function(transport, initCallback)
                 console.warn("Unhandled property update: " + data.object + "::" + data.signal);
             }
         }
-        channel.exec({type: QWebChannelMessageTypes.idle});
+        channel.exec({ type: QWebChannelMessageTypes.idle });
     }
 
-    this.debug = function(message)
-    {
-        channel.send({type: QWebChannelMessageTypes.debug, data: message});
+    this.debug = function (message) {
+        channel.send({ type: QWebChannelMessageTypes.debug, data: message });
     };
 
-    channel.exec({type: QWebChannelMessageTypes.init}, function(data) {
+    channel.exec({ type: QWebChannelMessageTypes.init }, function (data) {
         for (var objectName in data) {
             var object = new QObject(objectName, data[objectName], channel);
         }
@@ -179,12 +119,11 @@ var QWebChannel = function(transport, initCallback)
         if (initCallback) {
             initCallback(channel);
         }
-        channel.exec({type: QWebChannelMessageTypes.idle});
+        channel.exec({ type: QWebChannelMessageTypes.idle });
     });
 };
 
-function QObject(name, data, webChannel)
-{
+function QObject(name, data, webChannel) {
     this.__id__ = name;
     webChannel.objects[name] = this;
 
@@ -198,8 +137,7 @@ function QObject(name, data, webChannel)
 
     // ----------------------------------------------------------------------
 
-    this.unwrapQObject = function(response)
-    {
+    this.unwrapQObject = function (response) {
         if (response instanceof Array) {
             // support list of objects
             var ret = new Array(response.length);
@@ -223,8 +161,8 @@ function QObject(name, data, webChannel)
             return;
         }
 
-        var qObject = new QObject( objectId, response.data, webChannel );
-        qObject.destroyed.connect(function() {
+        var qObject = new QObject(objectId, response.data, webChannel);
+        qObject.destroyed.connect(function () {
             if (webChannel.objects[objectId] === qObject) {
                 delete webChannel.objects[objectId];
                 // reset the now deleted QObject to an empty {} object
@@ -245,20 +183,18 @@ function QObject(name, data, webChannel)
         return qObject;
     }
 
-    this.unwrapProperties = function()
-    {
+    this.unwrapProperties = function () {
         for (var propertyIdx in object.__propertyCache__) {
             object.__propertyCache__[propertyIdx] = object.unwrapQObject(object.__propertyCache__[propertyIdx]);
         }
     }
 
-    function addSignal(signalData, isPropertyNotifySignal)
-    {
+    function addSignal(signalData, isPropertyNotifySignal) {
         var signalName = signalData[0];
         var signalIndex = signalData[1];
         object[signalName] = {
-            connect: function(callback) {
-                if (typeof(callback) !== "function") {
+            connect: function (callback) {
+                if (typeof (callback) !== "function") {
                     console.error("Bad callback given to connect to signal " + signalName);
                     return;
                 }
@@ -276,8 +212,8 @@ function QObject(name, data, webChannel)
                     });
                 }
             },
-            disconnect: function(callback) {
-                if (typeof(callback) !== "function") {
+            disconnect: function (callback) {
+                if (typeof (callback) !== "function") {
                     console.error("Bad callback given to disconnect from signal " + signalName);
                     return;
                 }
@@ -303,18 +239,16 @@ function QObject(name, data, webChannel)
     /**
      * Invokes all callbacks for the given signalname. Also works for property notify callbacks.
      */
-    function invokeSignalCallbacks(signalName, signalArgs)
-    {
+    function invokeSignalCallbacks(signalName, signalArgs) {
         var connections = object.__objectSignals__[signalName];
         if (connections) {
-            connections.forEach(function(callback) {
+            connections.forEach(function (callback) {
                 callback.apply(callback, signalArgs);
             });
         }
     }
 
-    this.propertyUpdate = function(signals, propertyMap)
-    {
+    this.propertyUpdate = function (signals, propertyMap) {
         // update property cache
         for (var propertyIndex in propertyMap) {
             var propertyValue = propertyMap[propertyIndex];
@@ -328,16 +262,14 @@ function QObject(name, data, webChannel)
         }
     }
 
-    this.signalEmitted = function(signalName, signalArgs)
-    {
+    this.signalEmitted = function (signalName, signalArgs) {
         invokeSignalCallbacks(signalName, signalArgs);
     }
 
-    function addMethod(methodData)
-    {
+    function addMethod(methodData) {
         var methodName = methodData[0];
         var methodIdx = methodData[1];
-        object[methodName] = function() {
+        object[methodName] = function () {
             var args = [];
             var callback;
             for (var i = 0; i < arguments.length; ++i) {
@@ -352,7 +284,7 @@ function QObject(name, data, webChannel)
                 "object": object.__id__,
                 "method": methodIdx,
                 "args": args
-            }, function(response) {
+            }, function (response) {
                 if (response !== undefined) {
                     var result = object.unwrapQObject(response);
                     if (callback) {
@@ -363,8 +295,7 @@ function QObject(name, data, webChannel)
         };
     }
 
-    function bindGetterSetter(propertyInfo)
-    {
+    function bindGetterSetter(propertyInfo) {
         var propertyIndex = propertyInfo[0];
         var propertyName = propertyInfo[1];
         var notifySignalData = propertyInfo[2];
@@ -392,7 +323,7 @@ function QObject(name, data, webChannel)
 
                 return propertyValue;
             },
-            set: function(value) {
+            set: function (value) {
                 if (value === undefined) {
                     console.warn("Property setter for " + propertyName + " called with undefined value!");
                     return;
@@ -415,7 +346,7 @@ function QObject(name, data, webChannel)
 
     data.properties.forEach(bindGetterSetter);
 
-    data.signals.forEach(function(signal) { addSignal(signal, false); });
+    data.signals.forEach(function (signal) { addSignal(signal, false); });
 
     for (var name in data.enums) {
         object[name] = data.enums[name];
@@ -428,3 +359,194 @@ if (typeof module === 'object') {
         QWebChannel: QWebChannel
     };
 }
+window.onload = function () {
+    new QWebChannel(qt.webChannelTransport, function (channel) {
+        window.pyjs = channel.objects.pyjs;
+    });
+    $("#msgHelp").children().on("click", function () {
+        var item = $(this);
+        $("#txtMsg").insertContent("{" + item.text().trim() + "}");
+    });
+};
+
+function LoadFriends(datas) {
+    $("#loadPanel").html("");
+    var temp = $(".user-item");
+    for (var i = 0; i < datas.length; i++) {
+        var item = temp.clone();
+        item.data("id", datas[i].UserName);
+        item.attr("title", loadData(datas[i]));
+        item.text((datas[i].RemarkName == "" ? datas[i].NickName : datas[i].RemarkName));
+        $("#loadPanel").append(item);
+    }
+}
+
+
+function loadData(data) {
+
+    var reg = new RegExp("'|\"", "g")
+    var temp = {
+        "NickName": data.NickName.replace(reg, "’"),
+        "RemarkName": data.RemarkName,
+        "Sex": data.Sex == 0 ? "未知" : data.Sex == 1 ? "男" : "女",
+        "Signature": data.Signature.replace(reg, "’"),
+        "PYInitial": data.PYInitial + "|" + data.PYQuanPin + "|" + data.RemarkPYInitial + "|" + data.RemarkPYQuanPin,
+        "Province": data.Province,
+        "City": data.City,
+        "DisplayName": data.DisplayName
+    }
+    return JSON.stringify(temp, null, 4); // Indented with tab
+
+}
+function SelectUser(sender) {
+    if ($(sender).parent().attr("id") == "sendPanel") {
+        $("#loadPanel").append($(sender));
+    } else {
+        $("#sendPanel").append($(sender));
+    }
+    var count = $('#sendPanel').children().length;
+    if (count > 0) {
+        $('#txtCount').text('发送消息（已经选择' + count + '人）');
+    } else {
+        $('#txtCount').text('发送消息');
+    }
+}
+function SendMsg() {
+    var msg = $("#txtMsg").val();
+    var to = $('#sendPanel').children();
+    var len = to.length;
+    var sleeptime = Math.random() * (len > 40 ? 5 : 0);
+
+    for (var i = 0; i < len; i++) {
+        var item = $(to[i]);
+        pyjs.sleep(sleeptime);
+        try {
+            var data = JSON.parse(item.attr("title"));
+            pyjs.sendMsg(msg.temp(data), item.data("id"));
+            item.click();
+        } catch (e) {
+            alert(item.attr("title"));
+            alert(e);
+        }
+    }
+}
+var isSearch = false;
+function search() {
+    if (isSearch) {
+        return
+    }
+    isSearch = true;
+    $('#loadPanel').children().show();
+    var text = $("#txtSearch").val();
+    if (text.length > 0) {
+        $('#loadPanel').children().each(function (i, item) {
+            //if ($(item).attr("title").indexOf(text) < 0) {
+            //    $(item).hide();
+            //}
+            if ($(item).attr("title").isLike(text) == false) {
+                $(item).hide();
+            }
+        });
+    }
+    isSearch = false;
+}
+
+
+String.prototype.temp = function (data) {
+    var template = this;
+    return template.replace(/\{([\w\.]*)\}/g, function (str, key) {
+        var keys = key.split("."), v = data[keys.shift()];
+        for (var i = 0, l = keys.length; i < l; i++) v = v[keys[i]];
+        return (typeof v !== "undefined" && v !== null) ? v : "";
+    });
+
+};
+/**
+ * 为字符串添加模糊比较的方法
+ * @param exp 模糊查询字符串，支持正则表达式
+ * @param i 是否区分大小写
+ * @returns
+ */
+String.prototype.isLike = function (exp, i) {
+    var str = this;
+    i = i == null ? false : i;
+    if (exp.constructor == String) {
+        /* 首先将表达式中的‘_’替换成‘.’，但是‘[_]’表示对‘_’的转义，所以做特殊处理 */
+        var s = exp.replace(/_/g, function (m, i) {
+            if (i == 0 || i == exp.length - 1) {
+                return ".";
+            } else {
+                if (exp.charAt(i - 1) == "[" && exp.charAt(i + 1) == "]") {
+                    return m;
+                }
+                return ".";
+            }
+        });
+        /* 将表达式中的‘%’替换成‘.’，但是‘[%]’表示对‘%’的转义，所以做特殊处理 */
+        s = s.replace(/%/g, function (m, i) {
+            if (i == 0 || i == s.length - 1) {
+                return ".*";
+            } else {
+                if (s.charAt(i - 1) == "[" && s.charAt(i + 1) == "]") {
+                    return m;
+                }
+                return ".*";
+            }
+        });
+
+        /*将表达式中的‘[_]’、‘[%]’分别替换为‘_’、‘%’*/
+        s = s.replace(/\[_\]/g, "_").replace(/\[%\]/g, "%");
+
+        /*对表达式处理完后构造一个新的正则表达式，用以判断当前字符串是否和给定的表达式相似*/
+        var regex = new RegExp("" + s, i ? "" : "i");
+        return regex.test(this);
+    }
+    return false;
+};
+
+
+//
+//使用方法
+//$(文本域选择器).insertContent("插入的内容");
+//$(文本域选择器).insertContent("插入的内容"，数值); //根据数值选中插入文本内容两边的边界, 数值: 0是表示插入文字全部选择，-1表示插入文字两边各少选中一个字符。
+//
+//在光标位置插入内容, 并选中
+(function ($) {
+    $.fn.extend({
+        insertContent: function (myValue, t) {
+            var $t = $(this)[0];
+            if (document.selection) { //ie
+                this.focus();
+                var sel = document.selection.createRange();
+                sel.text = myValue;
+                this.focus();
+                sel.moveStart('character', -l);
+                var wee = sel.text.length;
+                if (arguments.length == 2) {
+                    var l = $t.value.length;
+                    sel.moveEnd("character", wee + t);
+                    t <= 0 ? sel.moveStart("character", wee - 2 * t - myValue.length) : sel.moveStart("character", wee - t - myValue.length);
+
+                    sel.select();
+                }
+            } else if ($t.selectionStart || $t.selectionStart == '0') {
+                var startPos = $t.selectionStart;
+                var endPos = $t.selectionEnd;
+                var scrollTop = $t.scrollTop;
+                $t.value = $t.value.substring(0, startPos) + myValue + $t.value.substring(endPos, $t.value.length);
+                this.focus();
+                $t.selectionStart = startPos + myValue.length;
+                $t.selectionEnd = startPos + myValue.length;
+                $t.scrollTop = scrollTop;
+                if (arguments.length == 2) {
+                    $t.setSelectionRange(startPos - t, $t.selectionEnd + t);
+                    this.focus();
+                }
+            }
+            else {
+                this.value += myValue;
+                this.focus();
+            }
+        }
+    })
+})(jQuery);

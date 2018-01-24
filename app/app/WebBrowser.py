@@ -32,15 +32,15 @@ def getChatRooms():
     rooms = itchat.get_chatrooms(update=True)
     jsstring =json.dumps(rooms, ensure_ascii=False)
     print(jsstring)
-    page.runJavaScript("var rooms = "+ jsstring)
-    page.runJavaScript("LoadRooms(rooms);");
+    page.runJavaScript("var friends = "+ jsstring)
+    page.runJavaScript("LoadFriends(friends);");
 def getMPs():
     global page
     mps = itchat.get_mps(update=True)
     jsstring =json.dumps(mps, ensure_ascii=False)
     print(jsstring)
-    page.runJavaScript("var mps = "+ jsstring)
-    page.runJavaScript("LoadMPs(mps);");
+    page.runJavaScript("var friends = "+ jsstring)
+    page.runJavaScript("LoadFriends(friends);");
 
 class CallHandler(QObject):
     @pyqtSlot(str, result=str)
@@ -63,12 +63,11 @@ class CallHandler(QObject):
         print("send " + msg +" to " + toUser);
         itchat.send(msg=msg, toUserName=toUser)
 page = 0
+
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     view = QWebEngineView()
     view.setWindowTitle("AutoChat")
-    view.setFixedWidth(1024)
-    view.setFixedHeight(768)
     channel = QWebChannel()
     handler = CallHandler()
     channel.registerObject('pyjs', handler)
