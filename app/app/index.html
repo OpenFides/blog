@@ -34,12 +34,12 @@
                         <div class="panel-body">
                             <div class="btn-toolbar" role="toolbar" aria-label="...">
                                 <div class="btn-group" role="group" aria-label="...">
-                                    <input type="button" value="登录" onclick="pyjs.Wechat('login');" class="form-control" />
+                                    <input type="button" value="登录" onclick="host.login();" class="form-control" />
                                 </div>
                                 <div class="btn-group" role="group" aria-label="...">
-                                    <input type="button" value="好友" onclick="pyjs.Wechat('friend');" class="btn btn-default" />
-                                    <input type="button" value="群聊" onclick="pyjs.Wechat('chatRoom');" class="btn btn-default" />
-                                    <input type="button" value="公众号" onclick="pyjs.Wechat('mp');" class="btn btn-default" />
+                                    <input type="button" value="好友" onclick="host.getFriends();" class="btn btn-default" />
+                                    <input type="button" value="群聊" onclick="host.getChatRooms();" class="btn btn-default" />
+                                    <input type="button" value="公众号" onclick="host.getMPs();" class="btn btn-default" />
                                 </div>
                                 <div class="btn-group" data-toggle="buttons">
                                     <label class="btn btn-primary active" onclick="$('#loadPanel').children().each(function () { $(this).is(':hidden') ? '' : $(this).click(); });">
@@ -113,7 +113,7 @@
     </div>
     <script type="text/javascript" src="jquery.min.js"></script>
     <script type="text/javascript" src="bootstrap.min.js"></script>
-    <script type="text/javascript" src="qwebchannel.js"></script>
+    <script type="text/javascript" src="app.js"></script>
 
 </body>
 </html>
