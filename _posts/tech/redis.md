@@ -1,4 +1,4 @@
-``` c#
+ï»¿``` c#
 cd
 //if cc: command not found
 yum install gcc make
@@ -10,13 +10,13 @@ cd redis-stable
 make MALLOC=libc
 //
 /*
-make install»á½«make±àÒëÉú³ÉµÄ¿ÉÖ´ĞĞÎÄ¼ş¿½±´µ½/usr/local/binÄ¿Â¼ÏÂ
+make installä¼šå°†makeç¼–è¯‘ç”Ÿæˆçš„å¯æ‰§è¡Œæ–‡ä»¶æ‹·è´åˆ°/usr/local/binç›®å½•ä¸‹
 sudo cp redis-server redis-cli /usr/local/bin
 sudo cp redis-sentinel redis-benchmark redis-check-aof redis-check-dump /usr/local/bin
 */
 make install
 ./utils/install_server.sh
-//²é¿´Redis½ø³Ì
+//æŸ¥çœ‹Redisè¿›ç¨‹
 ps -ef|grep redis
 
 ```
@@ -44,11 +44,11 @@ Cli Executable : /usr/local/bin/redis-cli
 
 ```
 
-//¿ªÆôRedis·şÎñ
+//å¼€å¯RedisæœåŠ¡
 /etc/init.d/redis_6379 start
 //or 
 service redis_6379 start
-//¹Ø±ÕRedis·şÎñ
+//å…³é—­RedisæœåŠ¡
 /etc/init.d/redis_6379 stop
 //or
 service redis_6379 stop
