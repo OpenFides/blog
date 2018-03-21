@@ -49,6 +49,9 @@ ionic serve
    
 # Flutter
 
+Flutter是移动端开发SDK，包括框架，控件和工具等，能开发出漂亮的移动端APP，且同时支持Android和iOS。
+
+
 ## 下载
 ```shell
 
