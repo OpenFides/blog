@@ -13,16 +13,17 @@ Hibernate validator 5.4.1.Final
 Servlets 3.1.0
 HSQLDB 1.8.0.10
 Tomcat 7 maven plugin 2.2
+MySQL version 5.6 or better
 
 
-# Maven 依赖
+# Maven 依赖配置
 下面是 pom.xml 文件内容
 ```xml
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.dev-cheats.spring5</groupId>
-	<artifactId>spring5-mvc-hibernate-example</artifactId>
+	<groupId>com.bzway.spring5</groupId>
+	<artifactId>bzway-spring5-mvc</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
 	<properties>
@@ -147,6 +148,11 @@ Tomcat 7 maven plugin 2.2
 	</build>
 </project>
 ```
+//to run spring-boot
+mvn spring-boot:run
+//or 
+mvn clean package
+java -jar target/project-0.0.1.jar
 
 # 配置 DispatcherServlet
 随着 Servlet 3.0 规范的发布，可以不使用 xml 来配置 Servlet 容器。 在 Servlet 规范中提供了 ServletContainerInitializer，在这个类中，你可以注册过滤器，监听器，servlet等，就像你在 web.xml 中配置是一样的。
@@ -481,3 +487,227 @@ messages.properties
 user.name.invalid=输入的名称无效。必须在{2}-{1}个字符之间。
 user.email.invalid=无效的电子邮件!请输入有效电子邮件。
 注意：这里存储 Unicode 编码，否则中文显示可能会有问题。
+
+
+# Hibenate For Mysql
+
+## mysql配置
+```mysql
+mysql> create database db_example; -- Create the new database
+mysql> create user 'springuser'@'localhost' identified by 'ThePassword'; -- Creates the user
+mysql> grant all on db_example.* to 'springuser'@'localhost'; -- Gives all the privileges to the new user on the newly created database
+
+vim src/main/resources/application.properties
+spring.jpa.hibernate.ddl-auto=create  ##none, update, create, create-drop
+spring.datasource.url=jdbc:mysql://localhost:3306/db_example
+spring.datasource.username=springuser
+spring.datasource.password=ThePassword
+
+```
+
+## Create the @Entity model
+
+```java
+
+package hello;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+@Entity // This tells Hibernate to make a table out of this class
+public class User {
+    @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
+    private Integer id;
+
+    private String name;
+
+    private String email;
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+
+}
+``` 
+## Create the repository
+
+```java
+package hello;
+
+import org.springframework.data.repository.CrudRepository;
+
+import hello.User;
+
+// This will be AUTO IMPLEMENTED by Spring into a Bean called userRepository
+// CRUD refers Create, Read, Update, Delete
+
+public interface UserRepository extends CrudRepository<User, Long> {
+
+}
+```
+
+## Create the Service or client to Execute SQL Access
+
+```java 
+package hello;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import hello.User;
+import hello.UserRepository;
+
+@Controller
+@RequestMapping(path="/demo") 
+public class MainController {
+	@Autowired 
+	private UserRepository userRepository;
+
+	@GetMapping(path="/add") // Map ONLY GET Requests
+	public @ResponseBody String addNewUser (@RequestParam String name
+			, @RequestParam String email) {
+		// @ResponseBody means the returned String is the response, not a view name
+		// @RequestParam means it is a parameter from the GET or POST request
+
+		User n = new User();
+		n.setName(name);
+		n.setEmail(email);
+		userRepository.save(n);
+		return "Saved";
+	}
+
+	@GetMapping(path="/all")
+	public @ResponseBody Iterable<User> getAllUsers() {
+		// This returns a JSON or XML with the users
+		return userRepository.findAll();
+	}
+}
+```
+
+## Validating Form Input
+ 
+```java
+//Create view model to validate te form input for web browser
+
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+public class PersonForm {
+
+    @NotNull
+    @Size(min=2, max=30)
+    private String name;
+
+    @NotNull
+    @Min(18)
+    private Integer age;
+
+    public String getName() {
+        return this.name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Integer getAge() {
+        return age;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
+    }
+
+    public String toString() {
+        return "Person(Name: " + this.name + ", Age: " + this.age + ")";
+    }
+}
+
+
+```
+
+create a web controller implements WebMvcConfigurer
+```java
+    @Override
+    public void addViewControllers(ViewControllerRegistry registry) {
+        registry.addViewController("/results").setViewName("results");
+    }
+
+    @GetMapping("/")
+    public String showForm(PersonForm personForm) {
+        return "form";//returns the form template.
+    }
+
+    @PostMapping("/")
+    public String checkPersonInfo(@Valid PersonForm personForm, BindingResult bindingResult) {
+		//with @Valid to gather the attributes filled out in the form you’re about to build. you can test for and retrive validation error using BindingResult
+        if (bindingResult.hasErrors()) {
+            return "form";
+        }
+
+        return "redirect:/results";//return redirect action to results template.
+    }
+	```
+
+# Containerize It
+## dockerfile
+```dockerfile
+FROM openjdk:8-jdk-alpine
+VOLUME /tmp
+ARG JAR_FILE
+ADD ${JAR_FILE} app.jar
+ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]
+```
+## Build a Docker Image with Maven
+```xml in pom.xml
+<plugin>
+	<groupId>com.spotify</groupId>
+	<artifactId>dockerfile-maven-plugin</artifactId>
+	<version>1.3.6</version>
+	<configuration>
+		<repository>${docker.image.prefix}/${project.artifactId}</repository>
+		<buildArgs>
+		<JAR_FILE>target/${project.build.finalName}.jar</JAR_FILE>
+		</buildArgs>
+	</configuration>
+</plugin>
+```
+
+You can build a tagged docker image using the command line like this:
+``` bat
+mvn install dockerfile:build
+# or publish
+mvn dockerfile:push
+# run docker
+docker run -p 8080:8080 -t springio/gs-spring-boot-docker
+```
+
