@@ -26,7 +26,9 @@
         <p class="lead">Cras justo odio, dapibus ac facilisis in, egestas eget quam. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
         <p><a class="btn btn-lg btn-success" href="#" role="button">Sign up today</a></p>
       </div>
-
+      <div> 
+            {{ content }}
+      </div>
       <div class="row marketing">
         <div class="col-lg-6">
           <h4>Subheading</h4>
@@ -55,49 +57,8 @@
         <p>© 2016 Company, Inc.</p>
       </footer>
 
-    </div> <!-- /container -->
-
-
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
-  
- 
-    <img src="/images/logo.png" width="0" height="0" />
-    <div class="rich_media">
-        <div class="rich_media_inner">
-            <div id="page-content" class="rich_media_area_primary">
-                <div id="img-content">
-                    <h2 class="rich_media_title" id="activity-name">
-                        {{ page.title }}
-                    </h2>
-                    <div id="meta_content" class="rich_media_meta_list">
-                        <em id="post-date" class="rich_media_meta rich_media_meta_text">{{ page.date | date: "%Y-%m-%d" }} </em>
-                        <a class="rich_media_meta rich_media_meta_link rich_media_meta_nickname" href="https://mp.weixin.qq.com/s/WWsmS9zuEA5Y2LxRa-JRvg" id="post-user">百易会员俱乐部</a>
-                    </div>
-                    <div class="rich_media_content " id="js_content">
-                        <p>
-                            {% if page.hidepic %}
-                            {% else %}
-                            <img src="https://media.licdn.com/mpr/mpr/shrinknp_400_400/AAEAAQAAAAAAAALIAAAAJDRjOTg0ZjcwLWI4MzgtNDcxOC1iOTRmLTBkZTczYmY2MTEwMA.jpg" data-type="jpeg"
-                                 style="width: 100% !important; height: auto !important; visibility: visible !important;" data-ratio="0.6388888888888888" data-w="360" width="100%">
-
-                            {% endif %}
-                        </p>
-                        {{ content }}
-                    </div>
-
-                </div>
-
-                <div class="rich_media_tool" id="js_toobar3">
-                    <div id="js_read_area3" class="media_tool_meta tips_global meta_primary" style="display:none;">Pageview <span id="readNum3"></span></div>
-                    <span style="display:none;" class="media_tool_meta meta_primary tips_global meta_praise" id="like3">
-                        <i class="icon_praise_gray"></i><span class="praise_num" id="likeNum3"></span>
-                    </span>
-                    <a id="js_report_article3" style="display:none;" class="media_tool_meta tips_global meta_extra" href="https://mp.weixin.qq.com/s/yaBIkuFs9t_M9O7tASRinw##">投诉</a>
-                </div>
-            </div>
-        </div>
-    </div>
+    </div>  
+              
     <script type="text/javascript">
 
         var imgUrl = 'http://blog.zhumingwu.cn/images/logo.png';
