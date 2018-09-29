@@ -1,0 +1,52 @@
+﻿
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>田字格字帖生成器</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="朱明武">
+    <link rel="shortcut icon" href="./favicon.ico">
+    <style>
+        body, div, ul, li {
+            padding: 0;
+            margin: 0;
+            list-style: none;
+        }
+
+        div {
+            width: 938px;
+            margin: 0 auto;
+            padding-left: 2px;
+        }
+
+        li {
+            float: left;
+            width: 80px;
+            height: 80px;
+            font-family: "全新硬笔楷书简", "楷体","楷体_gb2312";
+            font-size: 58px;
+            text-align: center;
+            line-height: 85px;
+            background: url(./images/bg12.jpg);
+            margin: 4px 0px 5px -2px;
+            color: #b8b8b8;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <ul id="tie"></ul>
+    </div>
+    <script src="js/jquery.js"></script>
+    <script>
+        var content = "相见时难别亦难，东风无力百花残。春蚕到死丝方尽，蜡炬成灰泪始干。晓镜但愁云鬓改，夜吟应觉月光寒。蓬山此去无多路，青鸟殷勤为探看。 (蓬山 一作：蓬莱) ";
+        for (var i in content) {
+            $("#tie").append("<li>" + content[i] + "</li>");
+        }
+    </script>
+</body>
+</html>
