@@ -1,4 +1,4 @@
-/*
+ï»¿/*
  * @Author: ecitlm 
  * @Date: 2017-08-04 23:18:26 
  * @Last Modified by:   ecitlm 
@@ -12,7 +12,7 @@
         var close_btn = document.querySelector(".close_btn");
         var timer = null;
 
-        //Ğü¸¡QQÔÈËÙÒÆ¶¯
+        //æ‚¬æµ®QQåŒ€é€Ÿç§»åŠ¨
         var startMove = function(argument) {
             var scrollsidebar = document.getElementById("scrollsidebar");
             clearInterval(timer);
@@ -27,7 +27,7 @@
             }, 20);
         };
 
-        //Êó±êÒÆ¶¯
+        //é¼ æ ‡ç§»åŠ¨
         var scrollMove = function() {
             window.onscroll = window.onload = function() {
                 var scrollsidebar = document.getElementById("scrollsidebar");
@@ -42,7 +42,7 @@
             };
         };
 
-        //Ğü¸¡QQÏÔÊ¾
+        //æ‚¬æµ®QQæ˜¾ç¤º
         var slideShow = function() {
             if (!show_btn) return false;
             show_btn.addEventListener(
@@ -55,7 +55,7 @@
             );
         };
 
-        //Ğü¸¡QQÒş²Ø
+        //æ‚¬æµ®QQéšè—
         var slideClose = function() {
             if (!close_btn) return false;
             close_btn.addEventListener(
@@ -69,7 +69,7 @@
             );
         };
 
-        //·µ»Ø³öÀ´µÄ·½·¨
+        //è¿”å›å‡ºæ¥çš„æ–¹æ³•
         return {
             init: function() {
                 scrollMove();
@@ -79,6 +79,6 @@
         };
     })();
 
-    //³õÊ¼»¯
+    //åˆå§‹åŒ–
     serviceOnline.init();
 })();

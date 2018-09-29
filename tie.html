@@ -37,15 +37,42 @@
     </style>
 </head>
 
-<body>
+<body onclick="showSetting();">
+    <div id="setting">
+        请输入字帖内容:<br />
+                <textarea id="content" style="width:100%; height:400px;" onblur="hideSetting();">   卜算子-迎春  
+  桃花映酒红，               
+  柳叶染衣绿。               
+  虽是杨春三月天，             
+  花开花易落。               
+  该来的要来，               
+  该去的要去。               
+  若得芳草犹胜花，             
+  何必问出处。               
+</textarea>
+         
+    </div>
+
     <div>
         <ul id="tie"></ul>
     </div>
     <script src="js/jquery.js"></script>
     <script>
-        var content = "相见时难别亦难，东风无力百花残。春蚕到死丝方尽，蜡炬成灰泪始干。晓镜但愁云鬓改，夜吟应觉月光寒。蓬山此去无多路，青鸟殷勤为探看。 (蓬山 一作：蓬莱) ";
-        for (var i in content) {
-            $("#tie").append("<li>" + content[i] + "</li>");
+        function hideSetting() {
+            var content = $("#content").val();
+            if (content.length <= 0) {
+                return;
+            }
+            $("#tie").html("");
+            for (var i in content) {
+                $("#tie").append("<li>" + content[i] + "</li>");
+            }
+            $("#setting").hide();
+            return true;
+        }
+        function showSetting() {
+            //alert("test");
+            $("#setting").show();
         }
     </script>
 </body>
