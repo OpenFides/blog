@@ -10,6 +10,8 @@
     <meta name="author" content="朱明武">
     <link rel="shortcut icon" href="./favicon.ico">
     <style>
+    @font-face { font-family: 全新硬笔楷书简; src: url('/fonts/全新硬笔楷书简.ttf'); /* IE9+ */ }
+
         body, div, ul, li {
             padding: 0;
             margin: 0;
@@ -65,7 +67,12 @@
             }
             $("#tie").html("");
             for (var i in content) {
-                $("#tie").append("<li>" + content[i] + "</li>");
+                if (content[i] == ' ') {
+                    $("#tie").append("<li>&nbsp;</li>");
+                }
+                else {
+                    $("#tie").append("<li>" + content[i] + "</li>");
+                }
             }
             $("#setting").hide();
             return true;
