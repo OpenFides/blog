@@ -1,4 +1,4 @@
-@charset "utf-8";
+﻿@charset "utf-8";
 /*  author happy  */
 body {
 	background: #fff;
@@ -62,7 +62,7 @@ a:hover,a:focus {
 	margin-left: 20px;
 	width: 300px;
 	height: 62px;
-	background: url(../images/logo.png) no-repeat left center;
+	background: url(../images/logo_big.png) no-repeat left center;
 	}
 }
 .navbar-default .navbar-nav > li {
