@@ -8,41 +8,22 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="author" content="朱明武">
+    <link href="css/bootstrap.min.css" rel="stylesheet" />
+    <link href="css/tie.css" rel="stylesheet" />
     <link rel="shortcut icon" href="./favicon.ico">
-    <style>
-    @font-face { font-family: 全新硬笔楷书简; src: url('/fonts/全新硬笔楷书简.ttf'); /* IE9+ */ }
 
-        body, div, ul, li {
-            padding: 0;
-            margin: 0;
-            list-style: none;
-        }
-
-        div {
-            width: 938px;
-            margin: 0 auto;
-            padding-left: 2px;
-        }
-
-        li {
-            float: left;
-            width: 80px;
-            height: 80px;
-            font-family: "全新硬笔楷书简", "楷体","楷体_gb2312";
-            font-size: 58px;
-            text-align: center;
-            line-height: 85px;
-            background: url(./images/bg12.jpg);
-            margin: 4px 0px 5px -2px;
-            color: #b8b8b8;
-        }
-    </style>
 </head>
 
-<body onclick="showSetting();">
+<body>
     <div id="setting">
-        请输入字帖内容:<br />
-                <textarea id="content" style="width:100%; height:400px;" onblur="hideSetting();">   卜算子-迎春  
+        <div class="  btn-default" role="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+            朱明武字帖
+        </div>
+        <div class="collapse" id="collapseExample">
+            <div>
+                修改字帖内容：
+            </div>
+            <textarea id="content" style="width:100%; height:200px;" onkeydown="changeContent();">   卜算子-迎春  
   桃花映酒红，               
   柳叶染衣绿。               
   虽是杨春三月天，             
@@ -52,15 +33,15 @@
   若得芳草犹胜花，             
   何必问出处。               
 </textarea>
-         
+        </div>
     </div>
-
     <div>
         <ul id="tie"></ul>
     </div>
     <script src="js/jquery.js"></script>
+    <script src="js/bootstrap.min.js"></script>
     <script>
-        function hideSetting() {
+        function changeContent() {
             var content = $("#content").val();
             if (content.length <= 0) {
                 return;
@@ -74,13 +55,8 @@
                     $("#tie").append("<li>" + content[i] + "</li>");
                 }
             }
-            $("#setting").hide();
-            return true;
         }
-        function showSetting() {
-            //alert("test");
-            $("#setting").show();
-        }
+        changeContent();
     </script>
 </body>
 </html>

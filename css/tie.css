@@ -1,0 +1,34 @@
+﻿@font-face {
+    font-family: 全新硬笔楷书简;
+    src: url('/fonts/全新硬笔楷书简.ttf'); /* IE9+ */
+}
+
+body, div, ul, li {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+div {
+    width: 938px;
+    margin: 0 auto;
+    padding-left: 2px;
+}
+
+li {
+    float: left;
+    width: 80px;
+    height: 80px;
+    font-family: "全新硬笔楷书简", "楷体","楷体_gb2312";
+    font-size: 58px;
+    text-align: center;
+    line-height: 85px;
+    background: url(/images/bg12.jpg);
+    margin: 4px 0px 5px -2px;
+    color: #b8b8b8;
+}
+@media print {
+    li {
+        background: url(/images/bg12.jpg);
+    }
+}
