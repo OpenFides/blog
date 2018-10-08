@@ -2,33 +2,37 @@
     font-family: 全新硬笔楷书简;
     src: url('/fonts/全新硬笔楷书简.ttf'); /* IE9+ */
 }
-
-body, div, ul, li {
-    padding: 0;
-    margin: 0;
-    list-style: none;
-}
-
-div {
-    width: 938px;
-    margin: 0 auto;
-    padding-left: 2px;
-}
-
-li {
-    float: left;
-    width: 80px;
-    height: 80px;
-    font-family: "全新硬笔楷书简", "楷体","楷体_gb2312";
-    font-size: 58px;
+.tie, .tie img, .tie span {
+    width: 56px;
+    height: 56px;
+    line-height: 56px;
     text-align: center;
-    line-height: 85px;
-    background: url(/images/bg12.jpg);
-    margin: 4px 0px 5px -2px;
-    color: #b8b8b8;
+    vertical-align: central;
+    font-family: "全新硬笔楷书简", "楷体","楷体_gb2312";
+    font-size: 48px;
+    border-style: none;
+    margin: 0px 0px 5px 0px;
+    padding: 0px;
+    float: left;
 }
+
+    .tie img {
+        position: absolute;
+        z-index: 1;
+    }
+
+    .tie span {
+        position: absolute;
+        z-index: 2;
+    }
+
 @media print {
-    li {
-        background: url(/images/bg12.jpg);
+    body {
+        -webkit-print-color-adjust: exact;
+        background-color: rebeccapurple;
+    }
+
+    .no-print {
+        display: none;
     }
 }

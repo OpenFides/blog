@@ -15,8 +15,12 @@
 </head>
 
 <body>
-    <div id="setting">
-        <div class="  btn-default" role="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+    <div id="setting" class="no-print">
+        <div class="tie" id="temp" style="display:none;">
+            <span></span>
+            <img src="images/bg11.jpg" />
+        </div>
+        <div class="btn-default" role="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
             朱明武字帖
         </div>
         <div class="collapse" id="collapseExample">
@@ -35,25 +39,33 @@
 </textarea>
         </div>
     </div>
-    <div>
-        <ul id="tie"></ul>
+    <div id="tie" style="width:720px">
     </div>
     <script src="js/jquery.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script>
+        var temp = $("#temp");
+        var cont = $("#content");
+        var tie = $("#tie");
         function changeContent() {
-            var content = $("#content").val();
+            var content = cont.val();
             if (content.length <= 0) {
                 return;
             }
-            $("#tie").html("");
+            tie.html("");
             for (var i in content) {
+                if (i % (12 * 17) == 0) {
+                    tie.append("<div style='page-break-after:always;'></div>");
+                }
+                var div = temp.clone();
+                div.show();
                 if (content[i] == ' ') {
-                    $("#tie").append("<li>&nbsp;</li>");
+                    div.find("span").html("&nbsp;");
                 }
                 else {
-                    $("#tie").append("<li>" + content[i] + "</li>");
+                    div.find("span").html(content[i]);
                 }
+                tie.append(div);
             }
         }
         changeContent();
