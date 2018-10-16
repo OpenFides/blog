@@ -1,8 +1,8 @@
 ---
 layout: post
-title: 区块链
+title: java 技术 - Spring Framework
 ---
-                               
+
 
 # 开发环境
 IntelliJ IDEA 2017.2.5
@@ -552,7 +552,7 @@ public class User {
 
 
 }
-``` 
+```
 ## Create the repository
 
 ```java
@@ -613,7 +613,7 @@ public class MainController {
 ```
 
 ## Validating Form Input
- 
+
 ```java
 //Create view model to validate te form input for web browser
 
@@ -676,7 +676,7 @@ create a web controller implements WebMvcConfigurer
 
         return "redirect:/results";//return redirect action to results template.
     }
-	```
+```
 
 # Containerize It
 ## dockerfile
