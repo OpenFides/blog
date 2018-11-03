@@ -178,7 +178,7 @@ public class AppInitializer extends AbstractAnnotationConfigDispatcherServletIni
    }
 }
 ```
-# Spring WebMVC 配置
+# Spring Web MVC 配置
 Spring Web MVC配置如下。
 ```java
 package com.devcheats.demo.spring.config;
