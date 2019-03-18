@@ -154,6 +154,82 @@ mvn spring-boot:run
 mvn clean package
 java -jar target/project-0.0.1.jar
 
+
+# 后台运行Spring Boot应用
+## nohup
+推荐使用nohup这个命令, 使要执行命令永久的在后台执行
+nohup COMMAND &
+例如：
+1. sh test.sh &  
+将sh test.sh任务放到后台 ，即使关闭xshell退出当前session依然继续运行，但标准输出和标准错误信息会丢失
+2. nohup sh test.sh  
+将sh test.sh任务放到后台，关闭标准输入，前台不再能够接收任何输入（标准输入），重定向标准输出和标准错误到当前目录下的nohup.out文件，即使关闭xshell退出当前session依然继续运行。
+3. nohup sh test.sh  & 
+将sh test.sh任务放到后台，但是依然可以使用标准输入，前台能够接收任何输入，重定向标准输出和标准错误到当前目录下的nohup.out文件，即使关闭xshell退出当前session依然继续运行。
+
+所以使用：
+nohup java -jar filename.jar --spring.config.location=application-production.yml &
+
+nohup java -jar UnderArmourAPI-0.0.1-20181210.jar --spring.profiles.active=dev &
+
+nohup java -jar GoodyearAPI-201812131139.jar --spring.profiles.active=uat --server.port=8443 &
+
+## service
+新建一个脚本，jar作为service来运行，这样不用每次都打这么繁琐的命令了
+vi /etc/init.d/spring_app
+
+```shell
+#!/bin/sh
+SERVICE_NAME=spring_blog
+HOME=/root/spring-blog
+PATH_TO_JAR=$HOME/current/SpringBlog-0.1.jar
+PID_PATH_NAME=/tmp/spring_blog.pid
+LOG=$HOME/logs/production.log
+ERROR_LOG=$HOME/logs/production.err
+CONFIG=$HOME/application-production.yml
+case $1 in
+    start)
+        echo "Starting $SERVICE_NAME ..."
+        if [ ! -f $PID_PATH_NAME ]; then
+            cd $HOME/current
+            nohup java -jar $PATH_TO_JAR --spring.config.location=application-production.yml > $LOG 2> $ERROR_LOG &
+                        echo $! > $PID_PATH_NAME
+            echo "$SERVICE_NAME started ..."
+        else
+            echo "$SERVICE_NAME is already running ..."
+        fi
+    ;;
+    stop)
+        if [ -f $PID_PATH_NAME ]; then
+            PID=$(cat $PID_PATH_NAME);
+            echo "$SERVICE_NAME stoping ..."
+            kill $PID;
+            echo "$SERVICE_NAME stopped ..."
+            rm $PID_PATH_NAME
+        else
+            echo "$SERVICE_NAME is not running ..."
+        fi
+    ;;
+    restart)
+        if [ -f $PID_PATH_NAME ]; then
+            PID=$(cat $PID_PATH_NAME);
+            echo "$SERVICE_NAME stopping ...";
+            kill $PID;
+            echo "$SERVICE_NAME stopped ...";
+            rm $PID_PATH_NAME
+            echo "$SERVICE_NAME starting ..."
+            cd $HOME/current
+            nohup java -jar $PATH_TO_JAR --spring.config.location=application-production.yml > $LOG 2> $ERROR_LOG &
+                        echo $! > $PID_PATH_NAME
+            echo "$SERVICE_NAME started ..."
+        else
+            echo "$SERVICE_NAME is not running ..."
+        fi
+    ;;
+esac
+
+```
+
 # 配置 DispatcherServlet
 随着 Servlet 3.0 规范的发布，可以不使用 xml 来配置 Servlet 容器。 在 Servlet 规范中提供了 ServletContainerInitializer，在这个类中，你可以注册过滤器，监听器，servlet等，就像你在 web.xml 中配置是一样的。
 Spring 提供了一个用于处理 WebApplicationInitializer 类的 SpringServletContainerInitializer。 AbstractAnnotationConfigDispatcherServletInitializer 内部实现类实现了 WebApplicationInitializer的WebMvcConfigurer。 它注册一个 ContextLoaderlistener（可选）和一个 DispatcherServlet，并允许你轻松地添加配置类来加载他们， 并将过滤器应用到 DispatcherServlet 并提供servlet映射。
