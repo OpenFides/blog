@@ -43,11 +43,11 @@ vi /etc/profile
 
 JENKINS_HOME=/opt/jenkins
 NODE_HOME=/opt/node
-MAVEN_HOME=/opt/maven
+M2_HOME=/opt/maven
 export JENKINS_HOME
-export MAVEN_HOME
+export M2_HOME
 export NODE_HOME
-export PATH=${PATH}:${MAVEN_HOME}/bin:${NODE_HOME}/bin
+export PATH=${PATH}:${M2_HOME}/bin:${NODE_HOME}/bin
 
 :wq
 source /etc/profile
@@ -123,9 +123,6 @@ chkconfig --add jenkins
 chkconfig --level 345 jenkins on
 
 
-
 ## node 安装
 
 [点击此处]: https://nodejs.org/en/download	"下载node"
-
-
