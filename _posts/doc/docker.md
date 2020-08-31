@@ -1,16 +1,16 @@
-## °²×°Îå±Ê
+## å®‰è£…äº”ç¬”
 yum install ibus ibus-table-wubi
-## °²×°docker
+## å®‰è£…docker
 export http_proxy=http://172.16.210.31:8080/
-# °²×°Docker
+# å®‰è£…Docker
     yum install docker
-    #Æô¶¯docker·þÎñ
+    #å¯åŠ¨dockeræœåŠ¡
     systemctl  start docker.service
-    #ÅäÖÃ¿ª»úÆô¶¯
+    #é…ç½®å¼€æœºå¯åŠ¨
     systemctl  enable docker.service
 
-## Docker¼ÓËÙ
-	//ÐÞ¸ÄdaemonÅäÖÃÎÄ¼þ/etc/docker/daemon.json
+## DockeråŠ é€Ÿ
+	//ä¿®æ”¹daemoné…ç½®æ–‡ä»¶/etc/docker/daemon.json
     sudo mkdir -p /etc/docker
     sudo tee /etc/docker/daemon.json <<-'EOF'{  "registry-mirrors": ["https://ihllojuv.mirror.aliyuncs.com"]
     }
@@ -19,8 +19,8 @@ export http_proxy=http://172.16.210.31:8080/
     sudo systemctl restart docker
 
 ## ASP.Net Core Docker
-1. ±àÒëasp.net core copy to /docker/pulish
-2. ½øÈë/docker/publishÄ¿Â¼Ö´ÐÐ
+1. ç¼–è¯‘asp.net core copy to /docker/pulish
+2. è¿›å…¥/docker/publishç›®å½•æ‰§è¡Œ
 ```
 vim dockerfile
 //file content
@@ -30,22 +30,22 @@ WORKDIR /publish
 EXPOSE 80
 CMD ["dotnet", "Bzway.Sites.BackOffice.dll"]
 ```
-3. Éú³ÉÒ»¸öÃûÎªweb-netcoreµÄ¾µÏñ
+3. ç”Ÿæˆä¸€ä¸ªåä¸ºweb-netcoreçš„é•œåƒ
 ```
 docker build -t web-netcore . 
 ```
-4. ÔËÐÐdockerÈÝÆ÷
+4. è¿è¡Œdockerå®¹å™¨
 ```
-//demoÊÇÖÆ¶¨ÈÝÆ÷µÄÃû³Æ£¬-pÊÇ½øÐÐËÞÖ÷ºÍÈÝÆ÷Ö®¼ä¶Ë¿ÚµÄÓ³Éä
+//demoæ˜¯åˆ¶å®šå®¹å™¨çš„åç§°ï¼Œ-pæ˜¯è¿›è¡Œå®¿ä¸»å’Œå®¹å™¨ä¹‹é—´ç«¯å£çš„æ˜ å°„
 docker run --name demo  -p 8080:80 web-netcore:late
 ```
 
 
-## DockerµÄÍË³öºó½øÈë
+## Dockerçš„é€€å‡ºåŽè¿›å…¥
 
-±¾ÎÄ½«ÌÖÂÛÎåÖÖ£¨4+1£©Á¬½ÓDockerÈÝÆ÷²¢ÓëÆä½øÐÐ½»»¥µÄ·½·¨¡£
+æœ¬æ–‡å°†è®¨è®ºäº”ç§ï¼ˆ4+1ï¼‰è¿žæŽ¥Dockerå®¹å™¨å¹¶ä¸Žå…¶è¿›è¡Œäº¤äº’çš„æ–¹æ³•ã€‚
 1.nsenter
-°²×°nsenter ¿ÉÒÔ°´ÕÕÏÂÃæµÄ·½·¨´ÓÔ´Âë°²×°
+å®‰è£…nsenter å¯ä»¥æŒ‰ç…§ä¸‹é¢çš„æ–¹æ³•ä»Žæºç å®‰è£…
 $ curl https://www.kernel.org/pub/linux/utils/util-linux/v2.24/util-linux-2.24.tar.gz | tar -zxf-; cd util-linux-2.24;  
 or
 $ wget https://www.kernel.org/pub/linux/utils/util-linux/v2.24/util-linux-2.24.tar.gz; tar xzvf util-linux-2.24.tar.gz;cd util-linux-2.24;
@@ -53,14 +53,14 @@ $ ./configure --without-ncurses && make nsenter
 $ sudo cp nsenter /usr/local/bin  
  
 
-ÎªÁËÁ¬½Óµ½ÈÝÆ÷£¬Äã»¹ÐèÒªÕÒµ½ÈÝÆ÷µÄµÚÒ»¸ö½ø³ÌµÄPID£¬Í¨¹ýÕâ¸öPID£¬Äã¾Í¿ÉÒÔÁ¬½Óµ½Õâ¸öÈÝÆ÷£º
+ä¸ºäº†è¿žæŽ¥åˆ°å®¹å™¨ï¼Œä½ è¿˜éœ€è¦æ‰¾åˆ°å®¹å™¨çš„ç¬¬ä¸€ä¸ªè¿›ç¨‹çš„PIDï¼Œé€šè¿‡è¿™ä¸ªPIDï¼Œä½ å°±å¯ä»¥è¿žæŽ¥åˆ°è¿™ä¸ªå®¹å™¨ï¼š
 $ docker inspect --format "{{ .State.Pid }}" <container-id>  
 or
 $ run 'docker inspect -f "{{ .State.Pid }}" <container-id>'  
 $ nsenter --target $PID --mount --uts --ipc --net --pid  
 
 2.nsinit
-´Ó0.9°æ±¾¿ªÊ¼£¬Docker×ÔÉí¾Í¾ßÓÐÒ»¸ö¹ÜÀíÈÝÆ÷µÄ¿â£¬Ãû×ÖÎª libcontainer¡£libcontainerÖÐµÄnsinit¹¤¾ßÔÊÐíÓÃ»§Ö±½Ó·ÃÎÊlinuxÃû×Ö¿Õ¼äºÍcgroupÄÚºË¡£ÔÚ°²×°nsinitÖ®Ç°£¬ÄãÊ×ÏÈÐèÒª°²×°GoÔËÐÐÊ±»·¾³£º
+ä»Ž0.9ç‰ˆæœ¬å¼€å§‹ï¼ŒDockerè‡ªèº«å°±å…·æœ‰ä¸€ä¸ªç®¡ç†å®¹å™¨çš„åº“ï¼Œåå­—ä¸º libcontainerã€‚libcontainerä¸­çš„nsinitå·¥å…·å…è®¸ç”¨æˆ·ç›´æŽ¥è®¿é—®linuxåå­—ç©ºé—´å’Œcgroupå†…æ ¸ã€‚åœ¨å®‰è£…nsinitä¹‹å‰ï¼Œä½ é¦–å…ˆéœ€è¦å®‰è£…Goè¿è¡Œæ—¶çŽ¯å¢ƒï¼š
 
 $ apt-get installgit golang-go   
   
@@ -70,92 +70,92 @@ $ echo"export GOPATH=\$HOME/go-dev" >> ~/.profileecho "PATH=\$PATH:\$GOPATH/bin"
   
 $ source~/.profile  
  
-½ÓÏÂÀ´²Å°²×°nsinit:
+æŽ¥ä¸‹æ¥æ‰å®‰è£…nsinit:
 $ mkdir -p $GOPATH/src/github.com/dotcloudcd$GOPATH/src/github.com/dotcloud  
   
 $ git clone <a target=_blank href="https://github.com/dotcloud/docker.git">https://github.com/dotcloud/docker.git</a> $GOPATH/src/github.com/dotcloud/docker  
   
 $ /usr/bin/goget -v github.com/dotcloud/docker/vendor/src/github.com/docker/libcontainer/nsinit  
 
-nsinit¶ÁÈ¡µÄÊÇÎ»ÓÚ/var/lib/docer/execdriver/native/<Container-id>ÈÝÆ÷Ä¿Â¼ÏÂµÄÅäÖÃÊý¾Ý¡£ÒªÔËÐÐnsinit£¬ÄãÐèÒªÇÐ»»µ½ÈÝÆ÷Ä¿Â¼ÏÂ¡£ÓÉÓÚ/var/lib/dockerÄ¿Â¼¶ÔÓÚrootÓÃ»§ÊÇÖ»¶ÁÈ¨ÏÞ£¬Òò´ËÄã»¹ÐèÒªrootÈ¨ÏÞ¡£Í¨¹ýdockerµÄpsÃüÁî£¬Äã¿ÉÒÔÈ·¶¨ÈÝÆ÷ID¡£Ò»µ©Äã½øÈë/var/lib/dockerÄ¿Â¼£¬Äã¾Í¿ÉÒÔÁ¬½ÓÈÝÆ÷ÁË£º
+nsinitè¯»å–çš„æ˜¯ä½äºŽ/var/lib/docer/execdriver/native/<Container-id>å®¹å™¨ç›®å½•ä¸‹çš„é…ç½®æ•°æ®ã€‚è¦è¿è¡Œnsinitï¼Œä½ éœ€è¦åˆ‡æ¢åˆ°å®¹å™¨ç›®å½•ä¸‹ã€‚ç”±äºŽ/var/lib/dockerç›®å½•å¯¹äºŽrootç”¨æˆ·æ˜¯åªè¯»æƒé™ï¼Œå› æ­¤ä½ è¿˜éœ€è¦rootæƒé™ã€‚é€šè¿‡dockerçš„pså‘½ä»¤ï¼Œä½ å¯ä»¥ç¡®å®šå®¹å™¨IDã€‚ä¸€æ—¦ä½ è¿›å…¥/var/lib/dockerç›®å½•ï¼Œä½ å°±å¯ä»¥è¿žæŽ¥å®¹å™¨äº†ï¼š
 
 nsinit exec /bin/bash  
 
 3.lxc(-attach)
-Ö±µ½Docker 0.8.1°æ±¾ÎªÖ¹£¬LXCÒ»Ö±ÊÇ¹ÜÀíÈÝÆ÷µÄ»ù±¾¹¤¾ß£¬DockerÒ»Ö±Ö§³ÖÕâ¸ö¹¤¾ß¡£µ«ÊÇ´Ó0.9.0°æ±¾¿ªÊ¼£¬DockerÄ¬ÈÏÊ¹ÓÃlibcontainer¹ÜÀíÈÝÆ÷£¬²»ÔÙÒÀÀµLXCÁË¡£Òò´ËÄ¬ÈÏÇé¿öÏÂ£¬Äã²»ÄÜÊ¹ÓÃlxc-attachÁË¡£
+ç›´åˆ°Docker 0.8.1ç‰ˆæœ¬ä¸ºæ­¢ï¼ŒLXCä¸€ç›´æ˜¯ç®¡ç†å®¹å™¨çš„åŸºæœ¬å·¥å…·ï¼ŒDockerä¸€ç›´æ”¯æŒè¿™ä¸ªå·¥å…·ã€‚ä½†æ˜¯ä»Ž0.9.0ç‰ˆæœ¬å¼€å§‹ï¼ŒDockeré»˜è®¤ä½¿ç”¨libcontainerç®¡ç†å®¹å™¨ï¼Œä¸å†ä¾èµ–LXCäº†ã€‚å› æ­¤é»˜è®¤æƒ…å†µä¸‹ï¼Œä½ ä¸èƒ½ä½¿ç”¨lxc-attachäº†ã€‚
 
-Èç¹ûÄãÈÔÈ»Ï£ÍûÊ¹ÓÃlxc-attach£¬ÄÇÃ´ÄãÐèÒªÊ¹ÓÃ-e lxcÑ¡ÏîÀ´ÖØÐÂÆô¶¯Docker·þÎñ½ø³Ì¡£Ê¹ÓÃÕâ¸öÑ¡Ïî£¬DockerµÄÄÚ²¿½«ÔÙ´ÎÊ¹ÓÃLXC¹ÜÀíÈÝÆ÷ÁË¡£Íê³ÉÕâ¸öÈÎÎñ×î¼òµ¥µÄ×ö·¨¾ÍÊÇ´´½¨/etc/default/dockerÎÄ¼þ£¨Èç¹ûÕâ¸öÎÄ¼þÈÔÈ»²»´æÔÚ£©£¬²¢Ìí¼ÓÒÔÏÂÄÚÈÝ£º
+å¦‚æžœä½ ä»ç„¶å¸Œæœ›ä½¿ç”¨lxc-attachï¼Œé‚£ä¹ˆä½ éœ€è¦ä½¿ç”¨-e lxcé€‰é¡¹æ¥é‡æ–°å¯åŠ¨DockeræœåŠ¡è¿›ç¨‹ã€‚ä½¿ç”¨è¿™ä¸ªé€‰é¡¹ï¼ŒDockerçš„å†…éƒ¨å°†å†æ¬¡ä½¿ç”¨LXCç®¡ç†å®¹å™¨äº†ã€‚å®Œæˆè¿™ä¸ªä»»åŠ¡æœ€ç®€å•çš„åšæ³•å°±æ˜¯åˆ›å»º/etc/default/dockeræ–‡ä»¶ï¼ˆå¦‚æžœè¿™ä¸ªæ–‡ä»¶ä»ç„¶ä¸å­˜åœ¨ï¼‰ï¼Œå¹¶æ·»åŠ ä»¥ä¸‹å†…å®¹ï¼š
 DOCKER_OPTS=" -e lxc"  
 
-ÏÖÔÚÄã¿ÉÒÔÖØÐÂÆô¶¯Docker·þÎñÁË¡£ÒªÁ¬½ÓÈÝÆ÷£¬ÄãÐèÒªÖªµÀÍêÕûµÄÈÝÆ÷ID:
+çŽ°åœ¨ä½ å¯ä»¥é‡æ–°å¯åŠ¨DockeræœåŠ¡äº†ã€‚è¦è¿žæŽ¥å®¹å™¨ï¼Œä½ éœ€è¦çŸ¥é“å®Œæ•´çš„å®¹å™¨ID:
 docker ps --no-trunc  
-½ÓÏÂÀ´£¬Äã¾Í¿ÉÒÔÁ¬½ÓÕâ¸öÈÝÆ÷ÁË¡£ÒªÍê³ÉÏÂÃæ¹¤×÷£¬Äã»¹ÐèÒªrootÈ¨ÏÞ£º
+æŽ¥ä¸‹æ¥ï¼Œä½ å°±å¯ä»¥è¿žæŽ¥è¿™ä¸ªå®¹å™¨äº†ã€‚è¦å®Œæˆä¸‹é¢å·¥ä½œï¼Œä½ è¿˜éœ€è¦rootæƒé™ï¼š
 
 lxc-attach -n <container-id> -- /bin/bash  
 
 4.sshd
-ÉÏÃæËùÓÐÈýÖÖ·½·¨¶¼ÒªÇó¾ßÓÐÖ÷»úÏµÍ³µÄrootÈ¨ÏÞ¡£ÎªÁË²»²ÉÓÃrootÈ¨ÏÞ£¬Í¨¹ýssh·ÃÎÊÈÝÆ÷½«ÊÇÒ»¸öºÜºÃµÄÑ¡Ôñ¡£
+ä¸Šé¢æ‰€æœ‰ä¸‰ç§æ–¹æ³•éƒ½è¦æ±‚å…·æœ‰ä¸»æœºç³»ç»Ÿçš„rootæƒé™ã€‚ä¸ºäº†ä¸é‡‡ç”¨rootæƒé™ï¼Œé€šè¿‡sshè®¿é—®å®¹å™¨å°†æ˜¯ä¸€ä¸ªå¾ˆå¥½çš„é€‰æ‹©ã€‚
 
-Òª×öµ½ÕâÒ»µã£¬ÄãÐèÒª¹¹½¨Ò»¸öÖ§³ÖSSH·þÎñµÄ»ù´¡Ó³Ïñ¡£´ËÊ±£¬ÎÒÃÇ¿ÉÄÜÓöµ½ÕâÑùµÄÎÊÌâ£ºÎÒÃÇÊÇ²»ÊÇÓÃDocker CMD»òÕßENTRYPOINTÔËÐÐÒ»ÌõÃüÁî¾Í¿ÉÒÔÁË£¿Èç¹û´ËÊ±ÓÐsshd½ø³ÌÔËÐÐ£¬ÄÇÃ´ÎÒÃÇ¾Í²»ÒªÔÙÔËÐÐÆäËû½ø³ÌÁË¡£½ÓÏÂÀ´µÄ¹¤×÷ÊÇ´´½¨Ò»¸ö½Å±¾»òÕßÊ¹ÓÃÏñsupervisordÕâÑùµÄ½ø³Ì¹ÜÀí¹¤¾ßÀ´Æô¶¯ÆäËüËùÓÐÐèÒªÆô¶¯µÄ½ø³Ì¡£ÓÐ¹ØÈçºÎÊ¹ÓÃsupervisordµÄÓÅÐãµÄÎÄµµ¿ÉÒÔÔÚDockerµÄwebÕ¾µãÉÏÕÒµ½¡£Ò»µ©ÄãÆô¶¯ÁË¾ßÓÐsshd½ø³ÌµÄÈÝÆ÷£¬Äã¾Í¿ÉÒÔÏñÒÔÍùÒ»ÑùÍ¨¹ýssh¿Í»§¶ËÁËÁ¬½ÓÕâ¸öÈÝÆ÷ÁË¡£
+è¦åšåˆ°è¿™ä¸€ç‚¹ï¼Œä½ éœ€è¦æž„å»ºä¸€ä¸ªæ”¯æŒSSHæœåŠ¡çš„åŸºç¡€æ˜ åƒã€‚æ­¤æ—¶ï¼Œæˆ‘ä»¬å¯èƒ½é‡åˆ°è¿™æ ·çš„é—®é¢˜ï¼šæˆ‘ä»¬æ˜¯ä¸æ˜¯ç”¨Docker CMDæˆ–è€…ENTRYPOINTè¿è¡Œä¸€æ¡å‘½ä»¤å°±å¯ä»¥äº†ï¼Ÿå¦‚æžœæ­¤æ—¶æœ‰sshdè¿›ç¨‹è¿è¡Œï¼Œé‚£ä¹ˆæˆ‘ä»¬å°±ä¸è¦å†è¿è¡Œå…¶ä»–è¿›ç¨‹äº†ã€‚æŽ¥ä¸‹æ¥çš„å·¥ä½œæ˜¯åˆ›å»ºä¸€ä¸ªè„šæœ¬æˆ–è€…ä½¿ç”¨åƒsupervisordè¿™æ ·çš„è¿›ç¨‹ç®¡ç†å·¥å…·æ¥å¯åŠ¨å…¶å®ƒæ‰€æœ‰éœ€è¦å¯åŠ¨çš„è¿›ç¨‹ã€‚æœ‰å…³å¦‚ä½•ä½¿ç”¨supervisordçš„ä¼˜ç§€çš„æ–‡æ¡£å¯ä»¥åœ¨Dockerçš„webç«™ç‚¹ä¸Šæ‰¾åˆ°ã€‚ä¸€æ—¦ä½ å¯åŠ¨äº†å…·æœ‰sshdè¿›ç¨‹çš„å®¹å™¨ï¼Œä½ å°±å¯ä»¥åƒä»¥å¾€ä¸€æ ·é€šè¿‡sshå®¢æˆ·ç«¯äº†è¿žæŽ¥è¿™ä¸ªå®¹å™¨äº†ã€‚
 
-½áÂÛ
-sshd·½·¨¿ÉÄÜÊÇ×î¼òµ¥µÄÁ¬½ÓÈÝÆ÷µÄ·½·¨£¬¶øÇÒ´ó¶àÊýÓÃ»§Ï°¹ßÍ¨¹ýsshÁ¬½ÓÐéÄâ»ú¡£ÁíÍâ£¬Á¬½ÓÈÝÆ÷Ê±ÄãÒ²²»ÐèÒªÒ»¶¨Ê¹ÓÃrootÈ¨ÏÞ¡£²»¹ý£¬¶ÔÓÚÊÇ·ñÒ»¸öÈÝÆ÷ÊÇ·ñÓ¦µ±¹ÜÀí²»Ö¹Ò»¸ö½ø³ÌÈÔÈ»´æÔÚÐí¶àÕùÒé¡£ÕâÖÖ·½·¨×îÖÕÊ¹µÃÃ¿¸öÈÝÆ÷ÁË¶àÁËÒ»¸össhd½ø³Ì£¬Õâ´Ó¸ù±¾ÉÏÀ´Ëµ²»ÊÇ½ø³ÌÐéÄâ»¯µÄËùÌá³«µÄ¡£
+ç»“è®º
+sshdæ–¹æ³•å¯èƒ½æ˜¯æœ€ç®€å•çš„è¿žæŽ¥å®¹å™¨çš„æ–¹æ³•ï¼Œè€Œä¸”å¤§å¤šæ•°ç”¨æˆ·ä¹ æƒ¯é€šè¿‡sshè¿žæŽ¥è™šæ‹Ÿæœºã€‚å¦å¤–ï¼Œè¿žæŽ¥å®¹å™¨æ—¶ä½ ä¹Ÿä¸éœ€è¦ä¸€å®šä½¿ç”¨rootæƒé™ã€‚ä¸è¿‡ï¼Œå¯¹äºŽæ˜¯å¦ä¸€ä¸ªå®¹å™¨æ˜¯å¦åº”å½“ç®¡ç†ä¸æ­¢ä¸€ä¸ªè¿›ç¨‹ä»ç„¶å­˜åœ¨è®¸å¤šäº‰è®®ã€‚è¿™ç§æ–¹æ³•æœ€ç»ˆä½¿å¾—æ¯ä¸ªå®¹å™¨äº†å¤šäº†ä¸€ä¸ªsshdè¿›ç¨‹ï¼Œè¿™ä»Žæ ¹æœ¬ä¸Šæ¥è¯´ä¸æ˜¯è¿›ç¨‹è™šæ‹ŸåŒ–çš„æ‰€æå€¡çš„ã€‚
 
-ÁíÍâÈýÖÖ·½·¨¶¼ÐèÒªrootÈ¨ÏÞ¡£µ½0.8.1°æ±¾ÎªÖ¹£¬Docker¶¼ÊÇÊ¹ÓÃLXCÀ´¹ÜÀíÈÝÆ÷µÄ¡£ÕýÊÇÓÉÓÚÕâ¸öÔ­Òò£¬Ê¹ÓÃlxc-attachÁ¬½ÓÈÝÆ÷¾Í·Ç³£ÈÝÒ×¡£²»¹ý´Ó°æ±¾0.9.0¿ªÊ¼Docker·þÎñ¾Í±ØÐëÊ¹ÓÃ -e lxcÑ¡ÏîÆô¶¯²ÅÄÜÔÚÄÚ²¿Ö§³ÖLXC¹ÜÀíÈÝÆ÷¡£²»¹ý£¬ÓÉÓÚÉèÖÃÁËÕâ¸öÑ¡Ïî£¬Docker½«ÔÙ´ÎÒÀÀµLXC£¬¶øLXC¿ÉÄÜËæ×Å·¢²¼»òÕß°²×°µÄ²»Í¬¿ÉÄÜ±»ÌÞ³ý¡£
+å¦å¤–ä¸‰ç§æ–¹æ³•éƒ½éœ€è¦rootæƒé™ã€‚åˆ°0.8.1ç‰ˆæœ¬ä¸ºæ­¢ï¼ŒDockeréƒ½æ˜¯ä½¿ç”¨LXCæ¥ç®¡ç†å®¹å™¨çš„ã€‚æ­£æ˜¯ç”±äºŽè¿™ä¸ªåŽŸå› ï¼Œä½¿ç”¨lxc-attachè¿žæŽ¥å®¹å™¨å°±éžå¸¸å®¹æ˜“ã€‚ä¸è¿‡ä»Žç‰ˆæœ¬0.9.0å¼€å§‹DockeræœåŠ¡å°±å¿…é¡»ä½¿ç”¨ -e lxcé€‰é¡¹å¯åŠ¨æ‰èƒ½åœ¨å†…éƒ¨æ”¯æŒLXCç®¡ç†å®¹å™¨ã€‚ä¸è¿‡ï¼Œç”±äºŽè®¾ç½®äº†è¿™ä¸ªé€‰é¡¹ï¼ŒDockerå°†å†æ¬¡ä¾èµ–LXCï¼Œè€ŒLXCå¯èƒ½éšç€å‘å¸ƒæˆ–è€…å®‰è£…çš„ä¸åŒå¯èƒ½è¢«å‰”é™¤ã€‚
 
-nsenterºÍnsinit×ÜµÄÀ´ËµÊÇÏàÍ¬µÄ¡£ÕâÁ½¸ö¹¤¾ßµÄÖ÷ÒªÇø±ðÊÇnsinitÔÚ±¾ÉíµÄÈÝÆ÷ÁË½¨Á¢ÁËÒ»¸öÐÂµÄ½ø³Ì£¬¶ønsenterÖ»ÊÇ·ÃÎÊÁËÃû×Ö¿Õ¼ä¡£
+nsenterå’Œnsinitæ€»çš„æ¥è¯´æ˜¯ç›¸åŒçš„ã€‚è¿™ä¸¤ä¸ªå·¥å…·çš„ä¸»è¦åŒºåˆ«æ˜¯nsinitåœ¨æœ¬èº«çš„å®¹å™¨äº†å»ºç«‹äº†ä¸€ä¸ªæ–°çš„è¿›ç¨‹ï¼Œè€Œnsenteråªæ˜¯è®¿é—®äº†åå­—ç©ºé—´ã€‚
 
 
  
 
-nsenter»¹¿ÉÊµÏÖ¶àÖÕ¶Ë¶ÔÒ»¸öÈÝÆ÷µÄ²Ù×÷¡£Èç¹û½øÈëÒÑ¾­ÖÕÖ¹µÄÈÝÆ÷£¬µÚÒ»´Î°²×°Ö´ÐÐµÄÊ±ºòÊÇ¿ÉÒÔµÄ£¬¿ÉÒÔµÃµ½PIDµÄÖµ£¬²»¹ýÖ®ºóÔÙÖ´ÐÐµÄÊ±ºò·¢ÏÖPIDµÄÖµÎª0£¬Èç¹ûÄã½Ó×ÅÖ´ÐÐ
+nsenterè¿˜å¯å®žçŽ°å¤šç»ˆç«¯å¯¹ä¸€ä¸ªå®¹å™¨çš„æ“ä½œã€‚å¦‚æžœè¿›å…¥å·²ç»ç»ˆæ­¢çš„å®¹å™¨ï¼Œç¬¬ä¸€æ¬¡å®‰è£…æ‰§è¡Œçš„æ—¶å€™æ˜¯å¯ä»¥çš„ï¼Œå¯ä»¥å¾—åˆ°PIDçš„å€¼ï¼Œä¸è¿‡ä¹‹åŽå†æ‰§è¡Œçš„æ—¶å€™å‘çŽ°PIDçš„å€¼ä¸º0ï¼Œå¦‚æžœä½ æŽ¥ç€æ‰§è¡Œ
 nsenter --target $PID --mount --uts --ipc --net --pid
-Äã»á·¢ÏÖ ÇÐ»»µ½ÁËËÞÖ÷»úµÄ³¬¼¶¹ÜÀíÔ±È¨ÏÞ¡£ÕýÈ·µÄ·½·¨»áÔÚÏÂÃæ½éÉÜ£¬Ê×ÏÈÏÈ²¹³äÒ»ÏÂÒ»Ð©ÃüÁîµÄ²ÎÊýµÄº¬Òå£º
-    docker images£º ÁÐ³öimages
+ä½ ä¼šå‘çŽ° åˆ‡æ¢åˆ°äº†å®¿ä¸»æœºçš„è¶…çº§ç®¡ç†å‘˜æƒé™ã€‚æ­£ç¡®çš„æ–¹æ³•ä¼šåœ¨ä¸‹é¢ä»‹ç»ï¼Œé¦–å…ˆå…ˆè¡¥å……ä¸€ä¸‹ä¸€äº›å‘½ä»¤çš„å‚æ•°çš„å«ä¹‰ï¼š
+    docker imagesï¼š åˆ—å‡ºimages
 
-    docker images -a £ºÁÐ³öËùÓÐµÄimages£¨°üº¬ÀúÊ·£©
+    docker images -a ï¼šåˆ—å‡ºæ‰€æœ‰çš„imagesï¼ˆåŒ…å«åŽ†å²ï¼‰
 
-    docker images --tree £ºÏÔÊ¾¾µÏñµÄËùÓÐ²ã(layer)
+    docker images --tree ï¼šæ˜¾ç¤ºé•œåƒçš„æ‰€æœ‰å±‚(layer)
 
-    docker rmi  <image ID>£º É¾³ýÒ»¸ö»ò¶à¸öimage
+    docker rmi  <image ID>ï¼š åˆ é™¤ä¸€ä¸ªæˆ–å¤šä¸ªimage
 
-²é¿´ÈÝÆ÷
-    docker ps £ºÁÐ³öµ±Ç°ËùÓÐÕýÔÚÔËÐÐµÄcontainer
-    docker ps -l £ºÁÐ³ö×î½üÒ»´ÎÆô¶¯µÄcontainer
-    docker ps -a £ºÁÐ³öËùÓÐµÄcontainer£¨°üº¬ÀúÊ·£¬¼´ÔËÐÐ¹ýµÄcontainer£©
-    docker ps -q £ºÁÐ³ö×î½üÒ»´ÎÔËÐÐµÄcontainer ID
+æŸ¥çœ‹å®¹å™¨
+    docker ps ï¼šåˆ—å‡ºå½“å‰æ‰€æœ‰æ­£åœ¨è¿è¡Œçš„container
+    docker ps -l ï¼šåˆ—å‡ºæœ€è¿‘ä¸€æ¬¡å¯åŠ¨çš„container
+    docker ps -a ï¼šåˆ—å‡ºæ‰€æœ‰çš„containerï¼ˆåŒ…å«åŽ†å²ï¼Œå³è¿è¡Œè¿‡çš„containerï¼‰
+    docker ps -q ï¼šåˆ—å‡ºæœ€è¿‘ä¸€æ¬¡è¿è¡Œçš„container ID
 
-5.ÖØµãÀ´ÁË£º
+5.é‡ç‚¹æ¥äº†ï¼š
 $ docker ps -a  
 CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS           PORTS        NAMES  
 9cff554fb6d7        ubuntuold:14.04     /bin/bash           About an hour ago   Up About an hour        condescending_blackwell     
 e5c5498881ed        ubuntuold:14.04     /bin/bash           About an hour ago   Exited (0) 55 minutes ago  backstabbing_bardeen    
-    Í¨¹ýÒÔÉÏµÄÐÅÏ¢¿ÉÒÔ¿´³öÁ½ÕßÖ®¼äµÄ²î±ð£ºÇ°ÕßÊÇÕýÔÚÔËÐÐµÄÈÝÆ÷£»¶øºóÕßÊÇÒÑ¾­ÖÕÖ¹µÄÈÝÆ÷£¨Exited(0)£©¡£
+    é€šè¿‡ä»¥ä¸Šçš„ä¿¡æ¯å¯ä»¥çœ‹å‡ºä¸¤è€…ä¹‹é—´çš„å·®åˆ«ï¼šå‰è€…æ˜¯æ­£åœ¨è¿è¡Œçš„å®¹å™¨ï¼›è€ŒåŽè€…æ˜¯å·²ç»ç»ˆæ­¢çš„å®¹å™¨ï¼ˆExited(0)ï¼‰ã€‚
 
-    docker start/stop/restart<container> £º¿ªÆô/Í£Ö¹/ÖØÆôcontainer
-    docker start [container_id] £ºÔÙ´ÎÔËÐÐÄ³¸öcontainer£¨°üÀ¨ÀúÊ·container£©
-    docker attach [container_id]£ºÁ¬½ÓÒ»¸öÕýÔÚÔËÐÐµÄcontainerÊµÀý£¨¼´ÊµÀý±ØÐëÎªstart×´Ì¬£¬¿ÉÒÔ¶à¸ö´°¿ÚÍ¬Ê±attachÒ»¸öcontainerÊµÀý£©
-    docker start -i <container>£ºÆô¶¯Ò»¸öcontainer²¢½øÈë½»»¥Ä£Ê½£¨Ïàµ±ÓÚÏÈstart£¬ÔÚattach£©
+    docker start/stop/restart<container> ï¼šå¼€å¯/åœæ­¢/é‡å¯container
+    docker start [container_id] ï¼šå†æ¬¡è¿è¡ŒæŸä¸ªcontainerï¼ˆåŒ…æ‹¬åŽ†å²containerï¼‰
+    docker attach [container_id]ï¼šè¿žæŽ¥ä¸€ä¸ªæ­£åœ¨è¿è¡Œçš„containerå®žä¾‹ï¼ˆå³å®žä¾‹å¿…é¡»ä¸ºstartçŠ¶æ€ï¼Œå¯ä»¥å¤šä¸ªçª—å£åŒæ—¶attachä¸€ä¸ªcontainerå®žä¾‹ï¼‰
+    docker start -i <container>ï¼šå¯åŠ¨ä¸€ä¸ªcontainerå¹¶è¿›å…¥äº¤äº’æ¨¡å¼ï¼ˆç›¸å½“äºŽå…ˆstartï¼Œåœ¨attachï¼‰
 
  
 
-¾ÍÒÔºóÕße5c5498881edÎªÀý£ºÊ×ÏÈÖ´ÐÐ
+å°±ä»¥åŽè€…e5c5498881edä¸ºä¾‹ï¼šé¦–å…ˆæ‰§è¡Œ
 
 $ docker start e5c5498881ed  
-//Ö®ºóÔÙÒ»´Î²é¿´µÄÊ±ºòExited(0)ÒÑ¾­Ã»ÓÐÁË£¬Ò²¾ÍÊÇËµÃ÷¸ÃÈÝÆ÷ÒÑ¾­´ÓÖÕÖ¹µÄ×´Ì¬±äÎªÁËÕýÔÚÔËÐÐµÄ×´Ì¬  
+//ä¹‹åŽå†ä¸€æ¬¡æŸ¥çœ‹çš„æ—¶å€™Exited(0)å·²ç»æ²¡æœ‰äº†ï¼Œä¹Ÿå°±æ˜¯è¯´æ˜Žè¯¥å®¹å™¨å·²ç»ä»Žç»ˆæ­¢çš„çŠ¶æ€å˜ä¸ºäº†æ­£åœ¨è¿è¡Œçš„çŠ¶æ€  
   
 $docker attach e5c5498881ed  
-//Äã»áµÄ·¢ÏÖÒÑ¾­½øÈë¸ÃÈÝÆ÷ÁË£¬¶øÇÒÖ®Ç°µÄ²Ù×÷µÄÎÄ¼þÒÀÈ»´æÔÚ  
-//Èç¹ûÃ»ÓÐ·´Ó¦µÄ»°£¬ÔÙÒ»´Îµã»÷»Ø³µ¼´¿É  
+//ä½ ä¼šçš„å‘çŽ°å·²ç»è¿›å…¥è¯¥å®¹å™¨äº†ï¼Œè€Œä¸”ä¹‹å‰çš„æ“ä½œçš„æ–‡ä»¶ä¾ç„¶å­˜åœ¨  
+//å¦‚æžœæ²¡æœ‰ååº”çš„è¯ï¼Œå†ä¸€æ¬¡ç‚¹å‡»å›žè½¦å³å¯  
 
-    docker run -i -t <image> /bin/bash£ºÊ¹ÓÃimage´´½¨container²¢½øÈë½»»¥Ä£Ê½, login shellÊÇ/bin/bash
-    docker run -i -t -p <host_port:contain_port>£ºÓ³Éä HOST ¶Ë¿Úµ½ÈÝÆ÷£¬·½±ãÍâ²¿·ÃÎÊÈÝÆ÷ÄÚ·þÎñ£¬host_port ¿ÉÒÔÊ¡ÂÔ£¬Ê¡ÂÔ±íÊ¾°Ñ container_portÓ³Éäµ½Ò»¸ö¶¯Ì¬¶Ë¿Ú¡£
-   ×¢£ºÊ¹ÓÃstartÊÇÆô¶¯ÒÑ¾­´´½¨¹ýµÃcontainer£¬Ê¹ÓÃrunÔòÍ¨¹ýimage¿ªÆôÒ»¸öÐÂµÄcontainer¡£
+    docker run -i -t <image> /bin/bashï¼šä½¿ç”¨imageåˆ›å»ºcontainerå¹¶è¿›å…¥äº¤äº’æ¨¡å¼, login shellæ˜¯/bin/bash
+    docker run -i -t -p <host_port:contain_port>ï¼šæ˜ å°„ HOST ç«¯å£åˆ°å®¹å™¨ï¼Œæ–¹ä¾¿å¤–éƒ¨è®¿é—®å®¹å™¨å†…æœåŠ¡ï¼Œhost_port å¯ä»¥çœç•¥ï¼Œçœç•¥è¡¨ç¤ºæŠŠ container_portæ˜ å°„åˆ°ä¸€ä¸ªåŠ¨æ€ç«¯å£ã€‚
+   æ³¨ï¼šä½¿ç”¨startæ˜¯å¯åŠ¨å·²ç»åˆ›å»ºè¿‡å¾—containerï¼Œä½¿ç”¨runåˆ™é€šè¿‡imageå¼€å¯ä¸€ä¸ªæ–°çš„containerã€‚
 
  
 
-¸½¼Ó£º
+é™„åŠ ï¼š
 
-²é¿´rootÃÜÂë
-dockerÈÝÆ÷Æô¶¯Ê±µÄrootÓÃ»§µÄÃÜÂëÊÇËæ»ú·ÖÅäµÄ¡£ËùÒÔ£¬Í¨¹ýÕâÖÖ·½Ê½¾Í¿ÉÒÔµÃµ½ÈÝÆ÷µÄrootÓÃ»§µÄÃÜÂëÁË¡£
+æŸ¥çœ‹rootå¯†ç 
+dockerå®¹å™¨å¯åŠ¨æ—¶çš„rootç”¨æˆ·çš„å¯†ç æ˜¯éšæœºåˆ†é…çš„ã€‚æ‰€ä»¥ï¼Œé€šè¿‡è¿™ç§æ–¹å¼å°±å¯ä»¥å¾—åˆ°å®¹å™¨çš„rootç”¨æˆ·çš„å¯†ç äº†ã€‚
 docker logs 5817938c3f6e 2>&1 | grep 'User: ' | tail -n1

@@ -1,4 +1,4 @@
-﻿安装redis
+# 安装redis
 
 1.	下载解压编译
 wget http://download.redis.io/releases/redis-3.2.5.tar.gz
@@ -14,20 +14,22 @@ cp redis-benchmark /opt/redis
 cp redis-cli  /opt/redis
 cp ../redis.conf  /opt/redis
 
-3.启动服务
+3. 启动服务
 cd /opt/redis
 ./redis-server redis.conf
 查看进程，确认redis已经启动
 ps -ef | grep redis
 
 
-4.连接服务
+4. 连接服务
 cd /opt/redis
 ./redis-cli
 
-5.设置自动启动
+# 其它设置
+## 设置自动启动
 vim /etc/init.d/redis
 
+```bash
 #!/bin/bash
 # chkconfig:  2345 90 10
 # description:  Redis is a persistent key-value database
@@ -50,7 +52,7 @@ case "$1" in
         then
               echo "Redis is running..."
         fi
-        ;;
+       ;;
     stop)
         if [ ! -f $PIDFILE ]
         then
@@ -75,15 +77,17 @@ case "$1" in
         echo "Usage: /etc/init.d/redis {start|stop|restart|force-reload}" >&2
         exit 1
 esac
+```
+
+
 
 执行权限
 chmod +x /etc/init.d/redis 
 
-# 开启服务自启动
+## 开启服务自启动
 chkconfig redis on
 
-# 尝试启动或停止redis
+## 尝试启动或停止redis
 service redis start
 service redis stop
-
 sudo ln -s /opt/redis/redis-cli /usr/local/bin
