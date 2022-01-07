@@ -1,0 +1,85 @@
+
+
+# 数据访问
+
+
+
+## JDBC
+
+
+
+JDBC 规范中的核心编程对象包括 DriverManger、DataSource、Connection、Statement，及 ResultSet。
+
+
+
+```java
+// 创建池化的数据源
+PooledDataSource dataSource = new PooledDataSource ();
+// 设置 MySQL Driver
+dataSource.setDriver ("com.mysql.jdbc.Driver");
+// 设置数据库 URL、用户名和密码
+dataSource.setUrl ("jdbc:mysql://localhost:3306/test");
+dataSource.setUsername("root");
+dataSource.setPassword("root");
+// 获取连接
+Connection connection = dataSource.getConnection();
+ 
+// 执行查询
+PreparedStatement statement = connection.prepareStatement ("select * from user");
+// 获取查询结果进行处理
+ResultSet resultSet = statement.executeQuery();
+while (resultSet.next()) {
+	…
+}
+ 
+// 关闭资源
+statement.close();
+resultSet.close();
+connection.close();
+
+```
+
+## JdbcTemplate
+
+
+
+```xml
+<dependency>
+  <groupId>org.springframework.boot</groupId>
+  <artifactId>spring-boot-starter-jdbc</artifactId>
+</dependency>
+
+```
+
+
+
+## Spring Data 
+
+Spring Data 是 Spring 家族中专门用于数据访问的开源框架，其对数据访问过程的抽象主要体现在两个方面：
+
+1. 提供了一套 Repository 接口定义及实现；
+
+```java
+public interface Repository<T, ID> {
+}
+```
+
+2. 实现了各种多样化的查询支持
+
+- 方法名衍生查询
+- 使用 @Query 注解 - 使用JPQL（Java Persistence Query Language）也可以nativeQuery=true
+- QueryByExample 机制 - QueryByExample 包括 Probe、ExampleMatcher 和 Example 这三个基本组件。
+- Specification 机制
+
+## Spring Data JPA
+
+
+
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-data-jpa</artifactId>
+</dependency>
+
+```
+

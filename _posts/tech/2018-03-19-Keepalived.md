@@ -60,12 +60,14 @@ global_defs {
 > 用来做健康检查
 > 当检查失败时会将vrrp_instance的priority减少相应的值。
 ```yaml
-vrrp_script monitor_nginx{
-   script "/etc/keepalived/monitor_nginx.sh"
-   interval 1
-   weight -15
+vrrp_script monitor_nginx {
+  script "[[ -f /etc/keepalived/monitor_nginx.sh ]] && exit 1 || exit 0"
+  interval 1
+  weight -15
 }
 ```
+> 注：vrrp_script 需要在 vrrp_instance 之前 而且需要注意 { } 前后需要有空格和回车
+> 使用ps判断时还需要注意脚本本身的名称
 
 ```sh
 //监控shell

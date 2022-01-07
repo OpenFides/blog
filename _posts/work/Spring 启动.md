@@ -1,0 +1,264 @@
+# SpringBoot启动原理
+
+# 1. 总体流程图
+
+由于SpringBoot的整个启动流程太长，还是先整个图吧。
+
+![img](asserts/8873335e4b724eca966dfc9d51ef35e2~tplv-k3u1fbpfcp-zoom-1.image)
+
+
+
+# 2. 源码阅读
+
+## 2.1 源码入口
+
+用过SpringBoot的都知道，启动项目需要如下代码:
+
+```
+package com.example.demo;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class DemoApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(DemoApplication.class, args);
+	}
+
+}
+复制代码
+```
+
+那么SpringApplication.run就是启动入口。
+
+## 2.2 SpringApplication构造方法
+
+该构造方法大概做了四件事:
+
+- 判断当前类型是Web
+- 加载所有的初始化器
+- 加载所有的监视器
+- 设置程序运行的主类
+
+```
+	public SpringApplication(ResourceLoader resourceLoader, Class<?>... primarySources) {
+		this.resourceLoader = resourceLoader;
+		Assert.notNull(primarySources, "PrimarySources must not be null");
+		//放入启动类
+		this.primarySources = new LinkedHashSet<>(Arrays.asList(primarySources));
+		//根据classpath 下的类，推算当前web应用类型(webFlux, servlet)
+		this.webApplicationType = WebApplicationType.deduceFromClasspath();
+		//就是去spring.factories 中去获取所有key:org.springframework.context.ApplicationContextInitializer
+		setInitializers((Collection) getSpringFactoriesInstances(ApplicationContextInitializer.class));
+		//就是去spring.factories 中去获取所有key: org.springframework.context.ApplicationListener
+		setListeners((Collection) getSpringFactoriesInstances(ApplicationListener.class));
+		// 根据main方法推算出mainApplicationClass
+		this.mainApplicationClass = deduceMainApplicationClass();
+	}
+复制代码
+```
+
+## 2.3 执行run方法
+
+这个方法是整个SpringBoot启动最核心的方法。
+
+```
+	public ConfigurableApplicationContext run(String... args) {
+	    // 用来记录当前springboot启动耗时
+		StopWatch stopWatch = new StopWatch();
+		// 就是记录了启动开始时间
+		stopWatch.start();
+		// 它是任何spring上下文的接口， 所以可以接收任何ApplicationContext实现
+		ConfigurableApplicationContext context = null;
+		Collection<SpringBootExceptionReporter> exceptionReporters = new ArrayList<>();
+		// 开启了Headless模式：
+		configureHeadlessProperty();
+		// 去spring.factroies中读取了SpringApplicationRunListener 的组件， 就是用来发布事件或者运行监听器
+		SpringApplicationRunListeners listeners = getRunListeners(args);
+		// 发布1.ApplicationStartingEvent事件，在运行开始时发送
+		listeners.starting();
+		try {
+		    // 根据命令行参数 实例化一个ApplicationArguments
+			ApplicationArguments applicationArguments = new DefaultApplicationArguments(args);
+			 // 预初始化环境： 读取环境变量，读取配置文件信息（基于监听器）
+			ConfigurableEnvironment environment = prepareEnvironment(listeners, applicationArguments);
+			// 忽略beaninfo的bean
+			configureIgnoreBeanInfo(environment);
+			// 打印Banner 横幅
+			Banner printedBanner = printBanner(environment);
+			// 根据webApplicationType创建Spring上下文
+			context = createApplicationContext();
+			exceptionReporters = getSpringFactoriesInstances(SpringBootExceptionReporter.class,
+					new Class[] { ConfigurableApplicationContext.class }, context);
+			//预初始化spring上下文
+			prepareContext(context, environment, listeners, applicationArguments, printedBanner);
+			// 加载spring ioc 容器 **相当重要 由于是使用AnnotationConfigServletWebServerApplicationContext 启动的sp ring容器所以springboot对它做了扩展： 
+			// 加载自动配置类：invokeBeanFactoryPostProcessors ， 创建servlet容器onRefresh
+			refreshContext(context);
+			afterRefresh(context, applicationArguments);
+			stopWatch.stop();
+			if (this.logStartupInfo) {
+				new StartupInfoLogger(this.mainApplicationClass).logStarted(getApplicationLog(), stopWatch);
+			}
+			listeners.started(context);
+			callRunners(context, applicationArguments);
+		}
+		catch (Throwable ex) {
+			handleRunFailure(context, ex, exceptionReporters, listeners);
+			throw new IllegalStateException(ex);
+		}
+
+		try {
+			listeners.running(context);
+		}
+		catch (Throwable ex) {
+			handleRunFailure(context, ex, exceptionReporters, null);
+			throw new IllegalStateException(ex);
+		}
+		return context;
+	}
+复制代码
+```
+
+### 2.3.1 计时器实例并启动
+
+这一段程序是启动计时器实例、进行Headless属性设置，并启动应用监听器
+
+```
+StopWatch stopWatch = new StopWatch();
+		stopWatch.start();
+		ConfigurableApplicationContext context = null;
+		Collection<SpringBootExceptionReporter> exceptionReporters = new ArrayList<>();
+		configureHeadlessProperty();
+复制代码
+```
+
+### 2.3.2 初始化监听器
+
+这里会从"META-INF/spring.factories"这个目录初始化监听器
+
+```
+SpringApplicationRunListeners listeners = getRunListeners(args);
+复制代码
+```
+
+### 2.3.3 启动监听器
+
+```
+listeners.starting();
+复制代码
+```
+
+### 2.3.4 装配环境参数
+
+这几行做了下面三件事:
+
+- 根据前面的webApplicationType值创建运行环境
+- 加载属性资源
+- 加入预监听集合
+
+```
+ApplicationArguments applicationArguments = new DefaultApplicationArguments(args);
+ConfigurableEnvironment environment = prepareEnvironment(listeners, applicationArguments);
+configureIgnoreBeanInfo(environment);
+复制代码
+```
+
+### 2.3.5 打印Banner图案
+
+这段就是打印图案的代码，如果想定制化，就修改这行代码。
+
+```
+Banner printedBanner = printBanner(environment);
+复制代码
+```
+
+### 2.3.6 上下文区域
+
+根据webApplicationType类型创建web/standard上下文，即创建servlet/reactive的上下文
+
+```
+context = createApplicationContext();
+复制代码
+```
+
+### 2.3.7 准备上下文异常报告器
+
+```
+exceptionReporters = getSpringFactoriesInstances(SpringBootExceptionReporter.class,
+					new Class[] { ConfigurableApplicationContext.class }, context);
+复制代码
+```
+
+### 2.3.8 上下文前置处理器
+
+该方法做了三件事，environment环境设置、initialize初始化设置、资源获取并加载以及配置监听。
+
+```
+prepareContext(context, environment, listeners, applicationArguments, printedBanner);
+复制代码
+```
+
+### 2.3.9 上下文刷新
+
+这个refresh()方法就是spring里边那个著名的方法，设置Bean工厂、生产Bean、注册后置处理器、初始化国际化资源、注册监听等等。唯一要特别注意的是onRefresh()这个方法，SpringBoot扩展了此方法，在这个方法里，最终创建了内置的Tomcat容器。
+
+ServletWebServerApplicationContext.createWebServer方法
+
+```
+	private void createWebServer() {
+		WebServer webServer = this.webServer;
+		ServletContext servletContext = getServletContext();
+		if (webServer == null && servletContext == null) {
+			ServletWebServerFactory factory = getWebServerFactory();
+			//这个方法创建了Web容器
+			this.webServer = factory.getWebServer(getSelfInitializer());
+			getBeanFactory().registerSingleton("webServerGracefulShutdown",
+					new WebServerGracefulShutdownLifecycle(this.webServer));
+			getBeanFactory().registerSingleton("webServerStartStop",
+					new WebServerStartStopLifecycle(this, this.webServer));
+		}
+		else if (servletContext != null) {
+			try {
+				getSelfInitializer().onStartup(servletContext);
+			}
+			catch (ServletException ex) {
+				throw new ApplicationContextException("Cannot initialize servlet context", ex);
+			}
+		}
+		initPropertySources();
+	}
+复制代码
+```
+
+### 2.3.10 上下文后置结束处理
+
+这里也会把计时器结束
+
+```
+afterRefresh(context, applicationArguments);
+stopWatch.stop();
+复制代码
+```
+
+### 2.3.11 发布应用上下文启动
+
+```
+listeners.started(context);
+复制代码
+```
+
+### 2.3.12 执行Runner执行器
+
+```
+listeners.running(context);
+复制代码
+```
+
+### 2.3.13 发布应用上下文就绪并返回
+
+最后将context返回。
+
+至此全部主流程分析完毕。
