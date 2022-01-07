@@ -553,7 +553,7 @@ public class Snippet {
 
 ApplicationContext是以bean管理为基础的综合能力扩展，用于满足业务对Spring综合能力的需要；
 
-![这里写图片描述](asserts/20180812101356107)
+![这里写图片描述](images/20180812101356107)
 
 
 # SpringEvent

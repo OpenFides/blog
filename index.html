@@ -4,15 +4,24 @@ title: 首页
 ---
 
 <div class='home_box' id='home_left'>
-    <h2>
-        <a href='http://feeds.feedburner.com/JoinTheConversation' class='float-right'>
-            <img src='/images/subscribe-icon.gif' alt='Subscribe' /></a> 最新博客 <span class="more">
-            (<a href='/blog.html'>更多</a>)</span>
-    </h2>
+  <h2>
+    <a href='http://feeds.feedburner.com/JoinTheConversation' class='float-right'>
+      <img src='/images/subscribe-icon.gif' alt='Subscribe' /></a> 最新博客 <span class="more">
+      (<a href='/blog.html'>更多</a>)</span>
+  </h2>
 
+    
+  {% for post in site.posts %}
+  {% if forloop.index < 5 %}
     <div class='post'>
-        <h1><a href='{{site.posts.first.url}}'>{{site.posts.first.title}}</a></h1>
-        <div class='body'>{{ site.posts.first.content }}</div>
-        <a href='{{site.posts.first.url}}#disqus_thread'>评论</a>
+      <span class='date'>{{post.date | date:"%Y-%m-%d"}}</span>
+      <h1><a href='{{post.url}}'>{{post.title}}</a></h1>
+      <div class='body'>{{post.content}}</div>
+      <a href='{{post.url}}#disqus_thread'>查看评论</a>
     </div>
+  {% endif %}
+  {% endfor %}
 </div>
+
+
+

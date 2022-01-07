@@ -45,7 +45,7 @@ Spring框架中常用的切点（内置大量类和方法过滤器）：
 4、afterThrowing:抛出异常通知(应用：包装异常信息)方法抛出异常后执行，如果方法没有抛出异常，无法执行
 5、after:最终通知(应用：清理现场)方法执行完毕后执行，无论方法中是否出现异常
 
-![79f3cb4d90700ce961d68f5b4aee5318.png](assets/79f3cb4d90700ce961d68f5b4aee5318.png)
+![79f3cb4d90700ce961d68f5b4aee5318.png](images/79f3cb4d90700ce961d68f5b4aee5318.png)
 
 
 
