@@ -21,8 +21,8 @@ mainCanvas.width = BGCanvas.width = cWidth;
 mainCanvas.height = BGCanvas.height = cHeight;
 
 const setUp = (function(){
-  const cardPicLoc = "./Images/Cards/";
-  const picLoc = "./Images/MiscImages/";
+  const cardPicLoc = "images/Cards/";
+  const picLoc = "images/MiscImages/";
   const cardImgMap = new Map();
   const miscImgMap = new Map();
   const pics = ['RedFeltTable.jpg','GoldCoin.png','FrameNarrow.png','bitcoin.png','CardBack.png','player.png','banker.png','tie.png','he.png','RedChip.png','BlueChip.png','BlackChip.png','DragonLeft.png','DragonRight.png'];
