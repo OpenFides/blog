@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>骨骼动画</title>
+    <!-- <style type="text/css" media="screen">
+        html, body { background-color: #666666;}
+        body { margin:0; padding:0; overflow:hidden; }
+    </style> -->
+
+</head>
+
+<body>
+
+</body>
+
+<script src='pasition.js'></script>
+<!-- <script src='https://unpkg.com/pasition@1.0.3/dist/pasition.js'></script> -->
+<script>
+    var time = 1000;
+    pasition.animate({
+        from: 'M 40 40 Q 60 80 80 40T 120 40 T 160 40 z',
+        to: 'M32,0C14.4,0,0,14.4,0,32s14.3,32,32,32 s32-14.3,32-32S49.7,0,32,0z',
+        time: 1000,
+        easing: function () { },
+        begin: function (shapes) { },
+        progress: function (shapes, percent) {
+            //你可以在任何你想绘制的地方绘制,如canvas、svg、webgl
+        },
+        end: function (shapes) { }
+    });
+
+</script>
+
+</html>

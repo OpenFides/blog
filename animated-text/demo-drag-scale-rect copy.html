@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <script src="https://unpkg.com/konva@9.2.1/konva.min.js"></script>
+  <meta charset="utf-8" />
+  <title>Konva Label Demo</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background-color: #dddddd;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="container"></div>
+  <script>
+    const pxPerMinute = 2.5;
+    const selected = [];
+    var stage = new Konva.Stage({
+      container: 'container',
+      width: window.innerWidth,
+      height: window.innerHeight, draggable: true
+    });
+
+    var layer = new Konva.Layer();
+    var group1 = new Konva.Group({
+      opacity: 0.3,
+      draggable: true,
+    });
+
+
+    group1.on('click', function () {
+      if (event.ctrlKey) {
+        if (this.opacity() == 1) {
+          this.opacity(0.3);
+          var i = selected.indexOf(this);
+          selected.splice(i, 1);
+        } else {
+          this.opacity(1);
+          selected.push(this);
+        }
+      } else {
+        layer.children.forEach(el => {
+          if (el.draggable()) el.opacity(0.3);
+        });
+        selected.splice(0, selected.length);
+        this.opacity(1);
+        selected.push(this);
+      }
+    });
+    group1.on('dblclick', function () {
+      alert(JSON.stringify(this.json));
+    });
+    group1.on('dragstart', function () {
+      this.originalY = this.y();
+      this.originalX = this.x();
+      selected.forEach(el => {
+        if (el == this) { } else {
+          el.originalY = el.y();
+          el.originalX = el.x();
+        }
+      });
+    });
+    group1.on('dragmove', function () {
+      this.y(this.originalY);
+      var span = this.originalX - this.x();
+      selected.forEach(el => {
+        if (el == this) { } else {
+          el.x(el.originalX - span);
+        }
+      });
+    });
+    group1.on('dragend', function () {
+      if (event.ctrlKey) {
+        var s = pxPerMinute * 5;
+        var i = (this.x() / s).toFixed() * s;
+        this.x(i);
+      }
+      var span = this.originalX - this.x();
+      selected.forEach(el => {
+        if (el == this) { } else {
+          el.x(el.originalX - span);
+        }
+      });
+    });
+    var r1 = new Konva.Rect({
+      x: pxPerMinute * 60,
+      y: 50,
+      width: pxPerMinute * 10,
+      height: 10,
+      fill: 'red',
+      stroke: 'black',
+      strokeWidth: 0
+    })
+    var r2 = new Konva.Rect({
+      x: r1.x() + r1.width(),
+      y: 50,
+      width: pxPerMinute * 25,
+      height: 10,
+      fill: 'blue',
+      stroke: 'black',
+      strokeWidth: 0
+    })
+    var r3 = new Konva.Rect({
+      x: r2.x() + r2.width(),
+      y: 50,
+      width: pxPerMinute * 20,
+      height: 10,
+      fill: 'red',
+      stroke: 'black',
+      strokeWidth: 0
+    })
+    group1.add(r1, r2, r3);
+    layer.add(group1);
+    var group2 = group1.clone();
+    group2.x(group2.x() + 200);
+    layer.add(group2);
+
+    var group3 = group1.clone();
+    group3.x(group3.x() + 400 + pxPerMinute * 5);
+    layer.add(group3);
+
+    var group4 = group1.clone();
+    group4.children.forEach(element => {
+      element.y(element.y() + 20);
+    });
+    layer.add(group4);
+    group4.x(group4.x() + 20);
+
+    var group5 = group1.clone();
+    group5.children.forEach(element => {
+      element.y(element.y() + 20);
+    });
+    layer.add(group5);
+    group5.x(group5.x() + 200 + pxPerMinute * 5);
+    var group6 = group1.clone();
+    group6.children.forEach(element => {
+      element.y(element.y() + 20);
+    });
+    layer.add(group6);
+    group6.x(group6.x() + 400 + pxPerMinute * 5 + 20);
+
+    var group7 = group1.clone();
+    group7.children.forEach(element => {
+      element.y(element.y() + 40);
+    });
+    layer.add(group7);
+    group7.x(group7.x() + 0 + 40);
+
+    var group8 = group1.clone();
+    group8.children.forEach(element => {
+      element.y(element.y() + 40);
+    });
+    layer.add(group8);
+    group8.x(group8.x() + 200 + 40);
+    var group9 = group1.clone();
+    group9.children.forEach(element => {
+      element.y(element.y() + 40);
+    });
+    layer.add(group9);
+    group9.x(group9.x() + 400 + pxPerMinute * 5 + 40);
+
+    var dt = new Date();
+    dt.setHours(12, 0,0);
+    // 小时 label
+    for (var i = 0; i < 20480; i += pxPerMinute * 60) {
+      var timespan = new Konva.Label({
+        x: i + pxPerMinute * 30 - 8,
+        y: 0,
+        // opacity: 0.75,  
+      });
+
+      timespan.add(
+        new Konva.Tag({
+          fill: 'white',
+        })
+      );
+
+      timespan.add(
+        new Konva.Text({
+          text: dt.getHours().toString().padStart(2, '0') + ":" + dt.getMinutes().toString().padStart(2, '0'),
+          fontFamily: 'Calibri',
+          fontSize: 11,
+          padding: 0,
+          fill: 'black',
+        })
+      );
+      layer.add(timespan);
+      dt.setTime(dt.getTime() + 60 * 60 * 1000);
+    }
+    var dt = new Date();
+    dt.setHours(8, 0);
+    // 分钟 label
+    for (var i = 0; i < 20480; i += pxPerMinute * 5) {
+      var timespan = new Konva.Label({
+        x: i,
+        y: 10,
+        // opacity: 0.75,
+      });
+
+      timespan.add(
+        new Konva.Tag({
+          fill: 'white',
+        })
+      );
+
+      timespan.add(
+        new Konva.Text({
+          text: dt.getMinutes().toString().padStart(2, '0'),
+          fontFamily: 'Calibri',
+          fontSize: 10,
+          padding: 1,
+          fill: 'black',
+        })
+      );
+      layer.add(timespan);
+      dt.setTime(dt.getTime() + 5 * 60 * 1000);
+    }
+    // add the layer to the stage
+    stage.add(layer);
+  </script>
+</body>
+
+</html>
